@@ -1,0 +1,10 @@
+# Server di casa:  docker compose up -d --build
+# Poi apri http://<ip-del-server>:8080 (per installarla su iPhone serve HTTPS: vedi README).
+services:
+  trainer:
+    build: .
+    image: my-personal-trainer:latest
+    container_name: my-personal-trainer
+    ports:
+      - "8080:80"
+    restart: unless-stopped
