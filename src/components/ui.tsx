@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
@@ -53,8 +53,14 @@ export function Stepper({
       >
         −
       </button>
-      <div className="text-center">
-        <div className="text-6xl font-bold tabular-nums">{value}</div>
+      <div className="min-w-0 text-center">
+        <NumericInput
+          value={value}
+          decimals={step < 1}
+          ariaLabel={unit ?? 'valore'}
+          onChange={(v) => Number.isFinite(v) && onChange(Math.max(min, v))}
+          className="w-full min-w-0 bg-transparent text-center text-6xl font-bold tabular-nums outline-none"
+        />
         {unit && <div className="text-sm text-slate-400">{unit}</div>}
       </div>
       <button
@@ -171,5 +177,50 @@ export function NumberRow({
         </button>
       </span>
     </div>
+  );
+}
+
+/**
+ * Campo numerico che accetta virgola o punto (la tastiera italiana dell'iPhone usa la virgola,
+ * che un input type="number" rifiuta). Tiene il testo mentre si scrive, così "62," non si perde.
+ */
+export function NumericInput({
+  value,
+  onChange,
+  decimals = false,
+  className = '',
+  placeholder,
+  ariaLabel,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  decimals?: boolean;
+  className?: string;
+  placeholder?: string;
+  ariaLabel?: string;
+}) {
+  const fmt = (v: number) => (Number.isFinite(v) ? String(v).replace('.', ',') : '');
+  const [text, setText] = useState(fmt(value));
+  // se il valore cambia da fuori (tasti −/+), aggiorna il testo
+  useEffect(() => {
+    const parsed = parseFloat(text.replace(',', '.'));
+    if (parsed !== value && !(Number.isNaN(parsed) && !Number.isFinite(value))) setText(fmt(value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+  return (
+    <input
+      type="text"
+      inputMode={decimals ? 'decimal' : 'numeric'}
+      aria-label={ariaLabel}
+      placeholder={placeholder}
+      value={text}
+      onFocus={(e) => e.target.select()}
+      onChange={(e) => {
+        const raw = e.target.value.replace(decimals ? /[^0-9.,]/g : /[^0-9]/g, '');
+        setText(raw);
+        onChange(raw === '' ? NaN : parseFloat(raw.replace(',', '.')));
+      }}
+      className={className}
+    />
   );
 }

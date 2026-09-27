@@ -31,7 +31,13 @@ export function startLoad(equipment: Equipment[], variant: VariantDef): string |
   if (!variant.loadKind) return null;
   const list = loadsOfKind(equipment, variant.loadKind);
   if (list.length === 0) return null;
-  return (variant.startLoad === 'heaviest' ? list[list.length - 1] : list[0]).id;
+  const pref = variant.startLoad;
+  if (pref === 'heaviest') return list[list.length - 1].id;
+  if (pref && typeof pref === 'object') {
+    // a parità di distanza vince il più leggero (la lista è già in ordine crescente)
+    return list.reduce((best, e) => (Math.abs(e.level - pref.closestTo) < Math.abs(best.level - pref.closestTo) ? e : best)).id;
+  }
+  return list[0].id;
 }
 
 /** Il prossimo attrezzo più duro dello stesso tipo, tra quelli registrati. */

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_EQUIPMENT, DEFAULT_SETTINGS, EXERCISES, INITIAL_PROFILE } from '../src/data/program';
+import { DEFAULT_SETTINGS, EXERCISES } from '../src/data/program';
+import { EXAMPLE_EQUIPMENT, EXAMPLE_TESTS } from './fixtures';
 import { addDays, nearestMonday } from '../src/domain/dates';
 import { initialState } from '../src/domain/progression';
 import { programDay } from '../src/domain/schedule';
@@ -49,9 +50,9 @@ describe('calendario', () => {
 });
 
 describe('sessione', () => {
-  const ctx = { date: START, absWeek: 1, equipment: DEFAULT_EQUIPMENT };
+  const ctx = { date: START, absWeek: 1, equipment: EXAMPLE_EQUIPMENT };
   const states = Object.fromEntries(
-    Object.values(EXERCISES).map((e) => [e.id, initialState(e, INITIAL_PROFILE.tests, ctx)]),
+    Object.values(EXERCISES).map((e) => [e.id, initialState(e, EXAMPLE_TESTS, ctx)]),
   );
 
   it('superserie: esercizio 1 → esercizio 2 → recupero', () => {
@@ -90,7 +91,7 @@ describe('sessione', () => {
   });
 
   it('attrezzi da preparare con elastico e ancoraggio', () => {
-    const gear = gearForPlan(buildPlan('C', states, DEFAULT_SETTINGS, false), DEFAULT_EQUIPMENT);
+    const gear = gearForPlan(buildPlan('C', states, DEFAULT_SETTINGS, false), EXAMPLE_EQUIPMENT);
     const band = gear.find((g) => g.kind === 'tube-band')!;
     expect(band.items.map((i) => i.id)).toEqual(['tube-yellow']);
     expect(band.anchors.sort()).toEqual(['alto', 'medio']);

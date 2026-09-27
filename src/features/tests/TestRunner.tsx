@@ -3,7 +3,7 @@ import { saveTestResult, type AppData, type TestOutcome } from '../../app/traine
 import { ExerciseImage } from '../../components/ExerciseImage';
 import { ExerciseInfo } from '../../components/ExerciseInfo';
 import { Button, Card, Sheet, Stepper } from '../../components/ui';
-import { EXERCISES, INITIAL_PROFILE, TESTS } from '../../data/program';
+import { BASELINE_TESTS, EXERCISES, TESTS } from '../../data/program';
 import type { ISODate, TestDef, TestValues } from '../../domain/types';
 import { countdownBeep, endBeep } from '../../lib/audio';
 import { mmss } from '../../lib/format';
@@ -46,7 +46,8 @@ function announce(phase: Phase): string {
 
 export function TestRunner({ data, date, onClose }: { data: AppData; date: ISODate; onClose: () => void }) {
   const settings = data.profile.settings;
-  const last = data.tests[data.tests.length - 1]?.values ?? INITIAL_PROFILE.tests;
+  const hasPrevious = data.tests.length > 0;
+  const last = data.tests[data.tests.length - 1]?.values ?? BASELINE_TESTS;
   const [phase, setPhase] = useState<Phase>({ kind: 'prep', i: 0 });
   const [values, setValues] = useState<TestValues>({ ...last });
   const [now, setNow] = useState(Date.now());
@@ -184,7 +185,8 @@ export function TestRunner({ data, date, onClose }: { data: AppData; date: ISODa
             {(phase.kind === 'enter' || (phase.kind === 'run' && t.mode === 'max' && t.metric === 'reps')) && (
               <Card>
                 <p className="mb-2 text-center text-slate-400">
-                  {t.metric === 'seconds' ? 'Secondi tenuti' : 'Ripetizioni fatte'} · ultima volta {last[t.id]}
+                  {t.metric === 'seconds' ? 'Secondi tenuti' : 'Ripetizioni fatte'}
+                  {hasPrevious && ` · ultima volta ${last[t.id]}`}
                 </p>
                 <Stepper value={values[t.id]} onChange={setValue} step={1} unit={t.unit} />
               </Card>

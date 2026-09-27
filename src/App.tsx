@@ -31,15 +31,15 @@ export default function App() {
     void requestPersistentStorage();
   }, []);
 
-  if (data === undefined) return <div className="flex h-full items-center justify-center text-slate-500">Caricamento…</div>;
-  if (data === null) return <Onboarding />;
-
   const startTest = () => {
     unlockMedia();
     setTesting(todayISO());
   };
 
-  if (restarting) return <Onboarding restart={data} onDone={() => setRestarting(false)} />;
+  if (data === undefined) return <div className="flex h-full items-center justify-center text-slate-500">Caricamento…</div>;
+  if (data === null) return <Onboarding onStartTests={startTest} />;
+
+  if (restarting) return <Onboarding restart={data} onDone={() => setRestarting(false)} onStartTests={startTest} />;
   if (testing) return <TestRunner data={data} date={testing} onClose={() => setTesting(null)} />;
   if (active?.view.workout) {
     return <WorkoutPlayer data={data} date={active.date} workout={active.view.workout} onClose={() => setActive(null)} />;

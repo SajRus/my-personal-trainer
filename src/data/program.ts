@@ -71,34 +71,56 @@ export const MUSCLE_LABEL: Record<MuscleGroup, string> = {
 
 export const MUSCLES: MuscleGroup[] = ['petto', 'spalle', 'tricipiti', 'bicipiti', 'schiena', 'core', 'glutei', 'quadricipiti', 'femorali'];
 
-// ---------------------------------------------------------------- profilo iniziale
+// ---------------------------------------------------------------- livello di partenza
 
-export const INITIAL_PROFILE = {
-  heightCm: 179,
-  weightKg: 87.5,
-  tests: { pushups: 11, squat: 20, plank: 45, burpees: 10, crunch: 15 } satisfies TestValues,
+/**
+ * Valori provvisori da principiante, usati solo finché non si fanno i test guidati
+ * (o se si sceglie di partire senza test). Nessun dato personale qui: ognuno inserisce i propri.
+ */
+export const BASELINE_TESTS: TestValues = { pushups: 8, squat: 20, plank: 30, burpees: 8, crunch: 15 };
+
+// ---------------------------------------------------------------- attrezzatura: preset generici
+
+/** Set proposti nella configurazione iniziale quando si dice "ho questo attrezzo". Nomi e colori si cambiano dopo. */
+export const EQUIPMENT_PRESETS: Record<Equipment['kind'], Equipment[]> = {
+  'tube-band': [
+    { id: 'tube-1', kind: 'tube-band', name: 'Giallo – leggero', color: '#eab308', level: 1 },
+    { id: 'tube-2', kind: 'tube-band', name: 'Rosso – medio', color: '#ef4444', level: 2 },
+    { id: 'tube-3', kind: 'tube-band', name: 'Blu – duro', color: '#3b82f6', level: 3 },
+  ],
+  'flat-band': [
+    { id: 'flat-1', kind: 'flat-band', name: 'Fascia leggera', color: '#a3e635', level: 1 },
+    { id: 'flat-2', kind: 'flat-band', name: 'Fascia media', color: '#f97316', level: 2 },
+  ],
+  'mini-band': [
+    { id: 'mini-1', kind: 'mini-band', name: 'Mini band leggera', color: '#facc15', level: 1 },
+    { id: 'mini-2', kind: 'mini-band', name: 'Mini band media', color: '#22c55e', level: 2 },
+    { id: 'mini-3', kind: 'mini-band', name: 'Mini band dura', color: '#a855f7', level: 3 },
+  ],
+  dumbbell: [], // si scelgono i pesi
+  ball: [{ id: 'ball', kind: 'ball', name: 'Palla da pilates', level: 1 }],
+  mat: [{ id: 'mat', kind: 'mat', name: 'Tappetino', level: 1 }],
+  'ab-wheel': [{ id: 'ab-wheel', kind: 'ab-wheel', name: 'Ruota per addominali', level: 1 }],
+  bike: [{ id: 'bike', kind: 'bike', name: 'Cyclette', level: 1 }],
+  chair: [{ id: 'chair', kind: 'chair', name: 'Sedia stabile', level: 1 }],
 };
 
-// ---------------------------------------------------------------- attrezzatura di default
+/** Pesi dei manubri proposti nella configurazione iniziale (kg). */
+export const DUMBBELL_CHOICES = [1, 2, 3, 4, 5, 6, 8, 10, 12];
 
-export const DEFAULT_EQUIPMENT: Equipment[] = [
-  { id: 'tube-yellow', kind: 'tube-band', name: 'Giallo – leggero', color: '#eab308', level: 1 },
-  { id: 'tube-red', kind: 'tube-band', name: 'Rosso – medio', color: '#ef4444', level: 2 },
-  { id: 'tube-blue', kind: 'tube-band', name: 'Blu – duro', color: '#3b82f6', level: 3 },
-  { id: 'tube-black', kind: 'tube-band', name: 'Nero – molto duro', color: '#6b7280', level: 4 },
-  { id: 'flat-light', kind: 'flat-band', name: 'Fascia leggera', color: '#a3e635', level: 1 },
-  { id: 'flat-medium', kind: 'flat-band', name: 'Fascia media', color: '#f97316', level: 2 },
-  { id: 'mini-light', kind: 'mini-band', name: 'Mini band leggera', color: '#facc15', level: 1 },
-  { id: 'mini-medium', kind: 'mini-band', name: 'Mini band media', color: '#22c55e', level: 2 },
-  { id: 'mini-hard', kind: 'mini-band', name: 'Mini band dura', color: '#a855f7', level: 3 },
-  { id: 'db-1', kind: 'dumbbell', name: 'Manubri 1 kg', level: 1, quantity: 2 },
-  { id: 'db-2', kind: 'dumbbell', name: 'Manubri 2 kg', level: 2, quantity: 2 },
-  { id: 'ball', kind: 'ball', name: 'Palla da pilates', level: 1 },
-  { id: 'mat', kind: 'mat', name: 'Tappetino', level: 1 },
-  { id: 'ab-wheel', kind: 'ab-wheel', name: 'Ruota per addominali', level: 1 },
-  { id: 'bike', kind: 'bike', name: 'Cyclette', level: 1 },
-  { id: 'chair', kind: 'chair', name: 'Sedia stabile', level: 1 },
-];
+export function dumbbell(kg: number): Equipment {
+  return { id: `db-${kg}`, kind: 'dumbbell', name: `Manubri ${String(kg).replace('.', ',')} kg`, level: kg, quantity: 2 };
+}
+
+/** Attrezzatura a partire dai tipi posseduti e dai pesi dei manubri. */
+export function buildEquipment(kinds: Equipment['kind'][], dumbbellKg: number[]): Equipment[] {
+  const out: Equipment[] = [];
+  for (const k of kinds) {
+    if (k === 'dumbbell') out.push(...[...dumbbellKg].sort((a, b) => a - b).map(dumbbell));
+    else out.push(...EQUIPMENT_PRESETS[k]);
+  }
+  return out;
+}
 
 export const EQUIPMENT_KIND_LABEL: Record<Equipment['kind'], string> = {
   'tube-band': 'Elastico tubolare',
@@ -204,7 +226,7 @@ export const EXERCISES: Record<string, ExerciseDef> = {
     ],
     illustration: 'lateralRaise',
     variants: [
-      { id: 'raise', name: 'Alzate laterali', start: 12, max: 20, step: 1, loadKind: 'dumbbell', startLoad: 'heaviest' },
+      { id: 'raise', name: 'Alzate laterali', start: 12, max: 20, step: 1, loadKind: 'dumbbell', startLoad: { closestTo: 2 } },
       {
         id: 'raise-pause',
         name: 'Alzate laterali con pausa di 2 s in alto',
@@ -212,7 +234,7 @@ export const EXERCISES: Record<string, ExerciseDef> = {
         max: 20,
         step: 1,
         loadKind: 'dumbbell',
-        startLoad: 'heaviest',
+        startLoad: { closestTo: 2 },
         maxHint: 'Hai raggiunto il massimo: mantieni, oppure aggiungi un elastico piatto sotto i piedi',
       },
     ],
@@ -271,7 +293,7 @@ export const EXERCISES: Record<string, ExerciseDef> = {
         max: 15,
         step: 1,
         loadKind: 'dumbbell',
-        startLoad: 'heaviest',
+        startLoad: { closestTo: 2 },
         maxHint: 'Hai raggiunto il massimo: mantieni con una pausa di 1 s in basso',
       },
     ],

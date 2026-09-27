@@ -28,7 +28,7 @@ export function Progress({ data }: { data: AppData }) {
       <div className="grid grid-cols-3 gap-2">
         <Stat value={String(currentStreak)} label={currentStreak === 1 ? 'giorno di fila' : 'giorni di fila'} />
         <Stat value={String(data.sessions.length)} label="allenamenti" />
-        <Stat value={lastWeight ? `${lastWeight.kg}` : '—'} label="kg" />
+        <Stat value={lastWeight ? String(lastWeight.kg).replace('.', ',') : '—'} label="kg" />
       </div>
 
       <Calendar data={data} done={done} today={today} />

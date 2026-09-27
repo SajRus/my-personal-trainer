@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_EQUIPMENT, EXERCISES, INITIAL_PROFILE } from '../src/data/program';
+import { EXERCISES } from '../src/data/program';
+import { EXAMPLE_EQUIPMENT, EXAMPLE_TESTS } from './fixtures';
 import {
   evaluateSession,
   initialState,
@@ -11,7 +12,7 @@ import {
 } from '../src/domain/progression';
 import type { Equipment, ExerciseDef, ExerciseState, SetLog } from '../src/domain/types';
 
-const ctx = (absWeek: number, equipment: Equipment[] = DEFAULT_EQUIPMENT): Ctx => ({
+const ctx = (absWeek: number, equipment: Equipment[] = EXAMPLE_EQUIPMENT): Ctx => ({
   date: '2026-09-28',
   absWeek,
   equipment,
@@ -33,7 +34,7 @@ function completeAndPrepare(ex: ExerciseDef, s: ExerciseState, week: number, nex
   return prepareForSession(ex, after, ctx(nextWeek));
 }
 
-const init = (id: string, week = 1) => initialState(EXERCISES[id], INITIAL_PROFILE.tests, ctx(week));
+const init = (id: string, week = 1) => initialState(EXERCISES[id], EXAMPLE_TESTS, ctx(week));
 
 describe('stato iniziale dai test', () => {
   it('rispetta le tabelle del programma', () => {
@@ -199,9 +200,9 @@ describe('varianti', () => {
 
 describe('progressione degli elastici', () => {
   it('nextLoad sceglie il successivo in ordine di durezza tra quelli registrati', () => {
-    expect(nextLoad(DEFAULT_EQUIPMENT, 'tube-band', 'tube-yellow')?.id).toBe('tube-red');
-    expect(nextLoad(DEFAULT_EQUIPMENT, 'tube-band', 'tube-blue')?.id).toBe('tube-black');
-    expect(nextLoad(DEFAULT_EQUIPMENT, 'tube-band', 'tube-black')).toBeNull();
+    expect(nextLoad(EXAMPLE_EQUIPMENT, 'tube-band', 'tube-yellow')?.id).toBe('tube-red');
+    expect(nextLoad(EXAMPLE_EQUIPMENT, 'tube-band', 'tube-blue')?.id).toBe('tube-black');
+    expect(nextLoad(EXAMPLE_EQUIPMENT, 'tube-band', 'tube-black')).toBeNull();
   });
 
   it('usa l’ordine di durezza, non l’ordine di inserimento', () => {
@@ -266,7 +267,7 @@ describe('progressione degli elastici', () => {
 describe('test e scarico', () => {
   it('dopo un test ricalcola i target dai nuovi massimi', () => {
     const ex = EXERCISES.pushup;
-    const s = recalcFromTest(ex, { ...init('pushup'), target: 9 }, { ...INITIAL_PROFILE.tests, pushups: 18 }, ctx(4));
+    const s = recalcFromTest(ex, { ...init('pushup'), target: 9 }, { ...EXAMPLE_TESTS, pushups: 18 }, ctx(4));
     expect(s.target).toBe(10); // 55% di 18 = 9,9
     expect(s.lastChange?.kind).toBe('test');
     expect(s.lastChange?.reason).toContain('di 18');
@@ -276,7 +277,7 @@ describe('test e scarico', () => {
   it('dopo un test non progredisce subito alla settimana dopo', () => {
     const ex = EXERCISES.pushup;
     let s = { ...init('pushup'), pendingProgress: true };
-    s = recalcFromTest(ex, s, { ...INITIAL_PROFILE.tests, pushups: 18 }, ctx(4));
+    s = recalcFromTest(ex, s, { ...EXAMPLE_TESTS, pushups: 18 }, ctx(4));
     s = prepareForSession(ex, s, ctx(5));
     expect(s.target).toBe(10);
   });
@@ -284,12 +285,12 @@ describe('test e scarico', () => {
   it('il test non tocca le varianti già avanzate', () => {
     const ex = EXERCISES.squat;
     const before: ExerciseState = { ...init('squat'), variantIndex: 1, target: 14, loadId: 'tube-yellow' };
-    const s = recalcFromTest(ex, before, { ...INITIAL_PROFILE.tests, squat: 30 }, ctx(4));
+    const s = recalcFromTest(ex, before, { ...EXAMPLE_TESTS, squat: 30 }, ctx(4));
     expect(s.target).toBe(14);
   });
 
   it('il ricalcolo rispetta il massimo della variante', () => {
-    const s = recalcFromTest(EXERCISES.pushup, init('pushup'), { ...INITIAL_PROFILE.tests, pushups: 40 }, ctx(4));
+    const s = recalcFromTest(EXERCISES.pushup, init('pushup'), { ...EXAMPLE_TESTS, pushups: 40 }, ctx(4));
     expect(s.target).toBe(12);
   });
 

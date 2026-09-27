@@ -1,7 +1,7 @@
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { finishWorkout, loadAll, setupProgram, todayView, type AppData } from '../src/app/trainer';
-import { INITIAL_PROFILE } from '../src/data/program';
+import { EXAMPLE_EQUIPMENT, EXAMPLE_TESTS } from './fixtures';
 import { addDays } from '../src/domain/dates';
 import type { SetLog } from '../src/domain/types';
 import { DexieRepository } from '../src/storage/dexieRepository';
@@ -16,7 +16,8 @@ beforeEach(async () => {
     programStart: START,
     heightCm: 179,
     weightKg: 87.5,
-    tests: INITIAL_PROFILE.tests,
+    tests: EXAMPLE_TESTS,
+    equipment: EXAMPLE_EQUIPMENT,
   });
 });
 
@@ -98,7 +99,7 @@ describe('test e giorni', () => {
   it('salvare un test ricalcola i target', async () => {
     const { saveTestResult } = await import('../src/app/trainer');
     const data = (await loadAll(repo))!;
-    const out = await saveTestResult(repo, data, addDays(START, 27), { ...INITIAL_PROFILE.tests, pushups: 18, plank: 60 });
+    const out = await saveTestResult(repo, data, addDays(START, 27), { ...EXAMPLE_TESTS, pushups: 18, plank: 60 });
     expect(out.previous?.values.pushups).toBe(11);
     const after = (await loadAll(repo))!;
     expect(after.states.pushup.target).toBe(10);

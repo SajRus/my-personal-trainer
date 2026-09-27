@@ -66,6 +66,16 @@ export function Today({
         </button>
       )}
 
+      {data.tests.length === 0 && (
+        <Card className="border-warn/50">
+          <p className="text-lg font-semibold text-warn">Target provvisori</p>
+          <p className="mt-1 text-slate-300">Non hai ancora fatto i 5 test: i numeri sono stime da principiante. Con i test l’app li adatta a te.</p>
+          <Button variant="primary" className="mt-3 w-full" onClick={onStartTest}>
+            📊 Fai i test adesso
+          </Button>
+        </Card>
+      )}
+
       {day.notStarted && (
         <Card>
           <p className="text-2xl font-semibold">Si parte {formatLong(data.profile.programStart)}</p>
@@ -163,6 +173,9 @@ function WorkoutPreview({
               {w.gear.map((g) => (
                 <li key={g.kind} className="flex flex-wrap items-center gap-2">
                   <span>{EQUIPMENT_KIND_LABEL[g.kind]}</span>
+                  {!data.equipment.some((e) => e.kind === g.kind) && (
+                    <span className="rounded-full bg-warn/15 px-2 py-0.5 text-xs text-warn">non ce l’hai: aggiungilo in Impostazioni o improvvisa</span>
+                  )}
                   {g.items.map((it) => (
                     <span key={it.id} className="flex items-center gap-1 text-sm text-slate-400">
                       {it.color && <span className="h-2.5 w-2.5 rounded-full" style={{ background: it.color }} />}

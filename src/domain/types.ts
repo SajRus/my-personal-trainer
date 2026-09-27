@@ -56,8 +56,11 @@ export interface VariantDef {
   step: number;
   /** Tipo di carico che si scala su questa variante (elastico o manubri). */
   loadKind?: EquipmentKind;
-  /** Con quale carico si parte quando si entra nella variante. Default: il più leggero. */
-  startLoad?: 'lightest' | 'heaviest';
+  /**
+   * Con quale carico si parte quando si entra nella variante. Default: il più leggero.
+   * `closestTo`: il carico col livello più vicino (per i manubri: i kg), es. 2 kg per le alzate laterali.
+   */
+  startLoad?: 'lightest' | 'heaviest' | { closestTo: number };
   /** Settimana del programma da cui la variante diventa obbligatoria (es. squat con elastico dalla settimana 3). */
   fromWeek?: number;
   /** Suggerimento mostrato quando si è al massimo e non c'è un gradino successivo. */

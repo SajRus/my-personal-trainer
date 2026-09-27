@@ -85,8 +85,18 @@ Service worker (offline), installazione come app e Screen Wake Lock funzionano *
 1. Apri l'indirizzo HTTPS dell'app in **Safari**.
 2. Tocca **Condividi** (il quadrato con la freccia) → **Aggiungi alla schermata Home** → **Aggiungi**.
 3. Apri l'app dall'icona **Trainer**: parte a schermo intero, senza barra del browser.
-4. Al primo avvio controlla profilo, test iniziali e data di inizio, poi **Crea il mio programma**.
+4. Al primo avvio segui la configurazione: profilo, attrezzatura, livello (test guidati o risultati già noti) e data di inizio.
 5. Per verificare l'offline: aprila una volta, attiva la modalità aereo e riaprila.
+
+### Se la usa qualcun altro
+
+Ogni persona usa l'app **sul proprio telefono** e ha i propri dati: nessuno vede allenamenti, test o peso degli altri, perché tutto resta in locale e non passa da un server. Al primo avvio c'è una configurazione a passi, **senza dati predefiniti**:
+1. **Profilo**: altezza e peso.
+2. **Attrezzatura**: cosa si ha, compresi i pesi dei manubri. Gli elastici partono da 3 livelli generici, modificabili in Impostazioni.
+3. **Livello**: test guidati subito (consigliato) oppure inserimento dei risultati di un test recente.
+4. **Data di inizio**.
+
+Chi cambia telefono può usare **"Ho già un backup: ripristina"** nella prima schermata.
 
 **Note su iOS**
 - Beep e voce partono dopo il tocco su "Inizia" (è una regola di iOS). Se non senti i beep, controlla l'interruttore silenzioso.

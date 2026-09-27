@@ -1,6 +1,6 @@
 // Casi d'uso dell'app: uniscono la logica pura (domain) e lo storage (repository).
 
-import { DAYS, DEFAULT_EQUIPMENT, DEFAULT_SETTINGS, EXERCISES } from '../data/program';
+import { BASELINE_TESTS, DAYS, DEFAULT_SETTINGS, EXERCISES } from '../data/program';
 import {
   evaluateSession,
   initialState,
@@ -59,11 +59,11 @@ export async function loadAll(repo: Repository): Promise<AppData | null> {
   ]);
   const byId: Record<string, ExerciseState> = Object.fromEntries(states.map((s) => [s.exerciseId, s]));
   // Esercizi aggiunti in program.ts dopo l'inizio: stato iniziale dall'ultimo test.
-  const lastTest = tests[tests.length - 1];
+  const baseTests = tests[tests.length - 1]?.values ?? BASELINE_TESTS;
   for (const ex of Object.values(EXERCISES)) {
-    if (!byId[ex.id] && lastTest) {
+    if (!byId[ex.id]) {
       const ctx: Ctx = { date: todayISO(), absWeek: programDay(profile.programStart, todayISO()).absWeek, equipment };
-      byId[ex.id] = initialState(ex, lastTest.values, ctx);
+      byId[ex.id] = initialState(ex, baseTests, ctx);
     }
   }
   return {
@@ -85,11 +85,15 @@ export interface SetupInput {
   heightCm: number;
   weightKg: number;
   tests: TestValues;
+  /** Attrezzatura scelta al primo avvio; se assente si tiene quella già salvata. */
+  equipment?: Equipment[];
+  /** I test sono valori provvisori (verranno fatti subito dopo con i test guidati). */
+  provisional?: boolean;
 }
 
 export async function setupProgram(repo: Repository, input: SetupInput): Promise<void> {
   const existing = await repo.getProfile();
-  const equipment = (await repo.listEquipment()).length ? await repo.listEquipment() : DEFAULT_EQUIPMENT;
+  const equipment = input.equipment ?? (await repo.listEquipment());
   const profile: Profile = {
     id: 'me',
     heightCm: input.heightCm,
@@ -98,10 +102,21 @@ export async function setupProgram(repo: Repository, input: SetupInput): Promise
     createdAt: existing?.createdAt ?? new Date().toISOString(),
   };
   const ctx: Ctx = { date: input.today, absWeek: Math.max(1, programDay(input.programStart, input.today).absWeek), equipment };
-  await repo.saveEquipment(equipment);
+  if (input.equipment) await repo.saveEquipment(input.equipment);
   await repo.saveBodyWeight({ date: input.today, kg: input.weightKg });
-  await repo.addTest({ id: newId(), date: input.today, values: input.tests, source: existing ? 'app' : 'initial' });
-  await repo.saveExerciseStates(Object.values(EXERCISES).map((ex) => initialState(ex, input.tests, ctx)));
+  if (!input.provisional) {
+    await repo.addTest({ id: newId(), date: input.today, values: input.tests, source: existing ? 'app' : 'initial' });
+  }
+  const states = Object.values(EXERCISES).map((ex) => initialState(ex, input.tests, ctx));
+  if (input.provisional) {
+    // niente "calcolato dal test": sono solo stime finché non si fanno i test veri
+    for (const st of states) {
+      const reason = 'Stima provvisoria: fai i test per adattarla a te';
+      st.lastChange = st.lastChange && { ...st.lastChange, reason };
+      st.history = st.history.map((h) => ({ ...h, reason }));
+    }
+  }
+  await repo.saveExerciseStates(states);
   // Il profilo per ultimo: la sua presenza indica che la configurazione è completa.
   await repo.saveProfile(profile);
 }

@@ -2,7 +2,7 @@ import { useRef, useState, type ReactNode } from 'react';
 import { saveSettings, type AppData } from '../../app/trainer';
 import { Button, Card, NumberRow, Sheet, Toggle } from '../../components/ui';
 import { MEDIA } from '../../data/media';
-import { EQUIPMENT_KIND_LABEL, EXERCISES } from '../../data/program';
+import { EQUIPMENT_KIND_LABEL, EQUIPMENT_PRESETS, EXERCISES } from '../../data/program';
 import { todayISO } from '../../domain/dates';
 import type { BackupData, Equipment, EquipmentKind } from '../../domain/types';
 import { readFileAsText, shareOrDownload } from '../../lib/files';
@@ -92,7 +92,21 @@ function EquipmentSection({ data }: { data: AppData }) {
       {KIND_ORDER.map((kind) => {
         const items = data.equipment.filter((e) => e.kind === kind).sort((a, b) => a.level - b.level);
         const leveled = LEVELED.includes(kind);
-        if (!items.length && !leveled) return null;
+        if (!leveled) {
+          // attrezzi singoli: basta dire se ce l'hai
+          return (
+            <div key={kind} className="border-t border-line pt-1">
+              <Toggle
+                label={EQUIPMENT_KIND_LABEL[kind]}
+                checked={items.length > 0}
+                onChange={async (on) => {
+                  if (on) await repo.saveEquipment(EQUIPMENT_PRESETS[kind]);
+                  else for (const it of items) await repo.deleteEquipment(it.id);
+                }}
+              />
+            </div>
+          );
+        }
         return (
           <div key={kind} className="border-t border-line pt-3">
             <div className="flex items-center justify-between">
@@ -116,7 +130,7 @@ function EquipmentSection({ data }: { data: AppData }) {
                   >
                     {e.color ? <span className="h-5 w-5 rounded-full border border-white/20" style={{ background: e.color }} /> : <span className="w-5" />}
                     <span className="flex-1 text-lg">{e.name}</span>
-                    {leveled && <span className="text-sm text-slate-400">livello {e.level}</span>}
+                    {leveled && e.kind !== 'dumbbell' && <span className="text-sm text-slate-400">livello {e.level}</span>}
                     <span className="text-slate-500">›</span>
                   </button>
                 </li>
