@@ -1,6 +1,6 @@
 // Casi d'uso dell'app: uniscono la logica pura (domain) e lo storage (repository).
 
-import { BASELINE_TESTS, DAYS, DEFAULT_SETTINGS, EXERCISES } from '../data/program';
+import { BASELINE_TESTS, DEFAULT_SETTINGS, EXERCISES } from '../data/program';
 import {
   evaluateSession,
   initialState,
@@ -9,6 +9,7 @@ import {
   recalcFromTest,
   type Ctx,
 } from '../domain/progression';
+import { chooseDay } from '../domain/rotation';
 import { programDay, type ProgramDay } from '../domain/schedule';
 import {
   buildPlan,
@@ -26,6 +27,7 @@ import type {
   ISODate,
   Profile,
   Settings,
+  Sex,
   SessionLog,
   SetLog,
   TestResult,
@@ -84,6 +86,7 @@ export interface SetupInput {
   programStart: ISODate;
   heightCm: number;
   weightKg: number;
+  sex?: Sex;
   tests: TestValues;
   /** Attrezzatura scelta al primo avvio; se assente si tiene quella già salvata. */
   equipment?: Equipment[];
@@ -97,6 +100,7 @@ export async function setupProgram(repo: Repository, input: SetupInput): Promise
   const profile: Profile = {
     id: 'me',
     heightCm: input.heightCm,
+    sex: input.sex ?? existing?.sex,
     programStart: input.programStart,
     settings: existing?.settings ?? DEFAULT_SETTINGS,
     createdAt: existing?.createdAt ?? new Date().toISOString(),
@@ -137,9 +141,6 @@ export interface TodayView {
   doneToday: SessionLog | null;
 }
 
-export function exercisesOfDay(dayType: WorkoutDayType): string[] {
-  return DAYS[dayType].blocks.flatMap((b) => b.exercises);
-}
 
 export function ctxFor(data: AppData, date: ISODate): Ctx {
   return { date, absWeek: programDay(data.profile.programStart, date).absWeek, equipment: data.equipment };
@@ -151,11 +152,13 @@ export function todayView(data: AppData, date: ISODate): TodayView {
   if (day.dayType !== 'A' && day.dayType !== 'B' && day.dayType !== 'C') return { day, workout: null, doneToday };
 
   const ctx = ctxFor(data, date);
+  // rotazione: esercizi diversi a ogni sessione, tra quelli che l'attrezzatura permette
+  const choice = chooseDay(day.dayType, date, data.profile.programStart, data.equipment);
   const prepared = { ...data.states };
-  for (const id of exercisesOfDay(day.dayType)) {
+  for (const id of choice.blocks.flat()) {
     prepared[id] = prepareForSession(EXERCISES[id], data.states[id], ctx);
   }
-  const plan = buildPlan(day.dayType, prepared, data.profile.settings, day.deload);
+  const plan = buildPlan(day.dayType, prepared, data.profile.settings, day.deload, choice);
   const steps = buildSteps(plan, data.profile.settings);
   return {
     day,
@@ -240,7 +243,7 @@ export async function finishWorkout(repo: Repository, data: AppData, input: Fini
   return { session, results, previous };
 }
 
-/** Volume di una sessione: ripetizioni totali (per gamba contano doppio) e secondi di tenuta. */
+/** Volume di una sessione: ripetizioni totali (quelle per lato contano doppio) e secondi di tenuta. */
 export function sessionVolume(s: Pick<SessionLog, 'sets'>): { reps: number; seconds: number } {
   let reps = 0;
   let seconds = 0;
@@ -308,6 +311,10 @@ export function dayView(data: AppData, date: ISODate, today: ISODate): DayView {
 }
 
 // ---------------------------------------------------------------- impostazioni
+
+export async function saveProfileFields(repo: Repository, data: AppData, patch: Partial<Pick<Profile, 'sex' | 'heightCm'>>) {
+  await repo.saveProfile({ ...data.profile, ...patch });
+}
 
 export async function saveSettings(repo: Repository, data: AppData, patch: Partial<Settings>): Promise<void> {
   await repo.saveProfile({ ...data.profile, settings: { ...data.profile.settings, ...patch } });

@@ -1,13 +1,13 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { MEDIA } from '../src/data/media';
-import { COOLDOWN, EXERCISES, TESTS, WARMUP } from '../src/data/program';
+import { COOLDOWN_POOLS, EXERCISES, TESTS, WARMUP_POOLS } from '../src/data/program';
 
 describe('immagini degli esercizi', () => {
   const keys = [
     ...Object.values(EXERCISES).map((e) => e.illustration),
-    ...WARMUP.map((w) => w.illustration),
-    ...COOLDOWN.map((c) => c.illustration),
+    ...WARMUP_POOLS.flat().map((w) => w.illustration),
+    ...COOLDOWN_POOLS.flat().map((c) => c.illustration),
     ...TESTS.map((t) => t.illustration),
   ];
 

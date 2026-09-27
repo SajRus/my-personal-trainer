@@ -1,10 +1,10 @@
 import { useRef, useState, type ReactNode } from 'react';
-import { saveSettings, type AppData } from '../../app/trainer';
+import { saveProfileFields, saveSettings, type AppData } from '../../app/trainer';
 import { Button, Card, NumberRow, Sheet, Toggle } from '../../components/ui';
 import { MEDIA } from '../../data/media';
-import { EQUIPMENT_KIND_LABEL, EQUIPMENT_PRESETS, EXERCISES } from '../../data/program';
+import { EQUIPMENT_KIND_LABEL, EQUIPMENT_PRESETS, EXERCISES, SEX_LABEL } from '../../data/program';
 import { todayISO } from '../../domain/dates';
-import type { BackupData, Equipment, EquipmentKind } from '../../domain/types';
+import type { BackupData, Equipment, EquipmentKind, Sex } from '../../domain/types';
 import { readFileAsText, shareOrDownload } from '../../lib/files';
 import { buildReminderIcs } from '../../lib/ics';
 import { newId } from '../../lib/id';
@@ -22,6 +22,25 @@ export function Settings({ data, onStartTest, onRestart }: { data: AppData; onSt
   return (
     <div className="flex flex-col gap-4 pb-4">
       <h1 className="text-3xl font-bold">Impostazioni</h1>
+
+      <Section title="Profilo">
+        <p className="text-lg">Sesso</p>
+        <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Sesso">
+          {(['F', 'M', 'X'] as Sex[]).map((k) => (
+            <button
+              key={k}
+              type="button"
+              role="radio"
+              aria-checked={(data.profile.sex ?? 'X') === k}
+              onClick={() => saveProfileFields(repo, data, { sex: k })}
+              className={`min-h-[3rem] rounded-xl border-2 px-2 text-base ${(data.profile.sex ?? 'X') === k ? 'border-accent bg-accent/15' : 'border-line'}`}
+            >
+              {SEX_LABEL[k]}
+            </button>
+          ))}
+        </div>
+        <NumberRow label="Altezza" value={data.profile.heightCm} unit="cm" min={100} onChange={(v) => saveProfileFields(repo, data, { heightCm: v })} />
+      </Section>
 
       <EquipmentSection data={data} />
 

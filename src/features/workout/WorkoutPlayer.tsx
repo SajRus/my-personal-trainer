@@ -22,7 +22,11 @@ const keyOf = (exerciseId: string, setIndex: number) => `${exerciseId}#${setInde
 
 /** Secondi del conto alla rovescia di una fase; null = fase senza timer (serie a ripetizioni). */
 function countdownOf(step: Step): number | null {
-  if (step.kind === 'work') return step.metric === 'seconds' ? step.target : null;
+  if (step.kind === 'work') {
+    if (step.metric !== 'seconds') return null;
+    // esercizi a tempo per lato (es. plank laterale): il timer copre entrambi i lati
+    return step.target * (EXERCISES[step.exerciseId].perSide ? 2 : 1);
+  }
   return step.seconds;
 }
 
@@ -63,11 +67,13 @@ export function WorkoutPlayer({
   const [result, setResult] = useState<FinishResult | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const startedAt = useRef(new Date().toISOString());
-  const timer = useRef({ endsAt: null as number | null, remainingMs: 0, lastBeep: Infinity, stepStart: Date.now() });
+  const timer = useRef({ endsAt: null as number | null, remainingMs: 0, lastBeep: Infinity, stepStart: Date.now(), switched: false });
   const logsRef = useRef(logs);
   logsRef.current = logs;
 
   const step = steps[index];
+  const stepRef = useRef(step);
+  stepRef.current = step;
   useWakeLock(!result);
 
   const draft = useMemo(() => {
@@ -148,6 +154,7 @@ export function WorkoutPlayer({
       remainingMs: (secs ?? 0) * 1000,
       lastBeep: Infinity,
       stepStart: Date.now(),
+      switched: false,
     };
     setRemaining(secs);
 
@@ -185,6 +192,13 @@ export function WorkoutPlayer({
         t.lastBeep = sec;
         if (settings.sounds) countdownBeep();
       }
+      // a metà di un esercizio a tempo per lato: cambio lato
+      const cur = stepRef.current;
+      if (cur.kind === 'work' && cur.metric === 'seconds' && EXERCISES[cur.exerciseId].perSide && !t.switched && sec <= cur.target) {
+        t.switched = true;
+        if (settings.sounds) endBeep();
+        if (settings.voice) speak('Cambia lato');
+      }
       if (ms <= 0) {
         t.endsAt = null;
         if (settings.sounds) endBeep();
@@ -207,7 +221,8 @@ export function WorkoutPlayer({
 
   const stopTimedSet = () => {
     if (step.kind !== 'work') return;
-    const done = Math.round((Date.now() - timer.current.stepStart) / 1000);
+    const sides = EXERCISES[step.exerciseId].perSide ? 2 : 1;
+    const done = Math.round((Date.now() - timer.current.stepStart) / 1000 / sides);
     saveLog(step.exerciseId, step.setIndex, Math.min(done, step.target), draft.loadId);
     goTo(index + 1);
   };
@@ -429,7 +444,12 @@ function WorkView({
       <ExerciseImage illustration={def.illustration} className="aspect-[16/10] w-full" paused={paused} />
 
       {step.metric === 'seconds' ? (
-        <BigTimer value={remaining} color="text-accent" />
+        <>
+          {def.perSide && remaining !== null && (
+            <p className="text-center text-lg font-semibold text-warn">{remaining > step.target ? 'Primo lato' : 'Secondo lato'}</p>
+          )}
+          <BigTimer value={remaining} color="text-accent" />
+        </>
       ) : (
         <>
           <p className="text-center text-lg text-slate-400">
@@ -438,7 +458,7 @@ function WorkView({
           <Stepper
             value={draft.done}
             onChange={(v) => setDraft({ ...draft, done: v })}
-            unit={def.perSide ? 'ripetizioni per gamba' : 'ripetizioni fatte'}
+            unit={def.perSide ? 'ripetizioni per lato' : 'ripetizioni fatte'}
           />
         </>
       )}
@@ -530,8 +550,8 @@ export function announce(step: Step, planned: Record<string, PlannedExercise>, d
       const def = EXERCISES[step.exerciseId];
       const amount =
         step.metric === 'seconds'
-          ? `${step.target} secondi. Via!`
-          : `${step.target} ripetizioni${def.perSide ? ' per gamba' : ''}.`;
+          ? `${step.target} secondi${def.perSide ? ' per lato' : ''}. Via!`
+          : `${step.target} ripetizioni${def.perSide ? ' per lato' : ''}.`;
       const head = step.supersetPos === 1 ? '' : step.isLastSet ? 'Ultima serie. ' : `Serie ${step.setIndex + 1} di ${step.totalSets}. `;
       return `${head}${p.variant.name}, ${amount}`;
     }

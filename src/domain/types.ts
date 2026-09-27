@@ -102,6 +102,11 @@ export type RestKind = 'long' | 'short';
 export interface BlockDef {
   id: string;
   exercises: string[]; // 1 = esercizio singolo, 2 = superserie
+  /**
+   * Alternative per ogni posizione (stesso indice di `exercises`): la rotazione automatica
+   * sceglie ogni volta un esercizio diverso tra l'originale e queste.
+   */
+  alternatives?: string[][];
   sets: number;
   rest: RestKind;
 }
@@ -156,9 +161,12 @@ export interface Settings {
   prepSec: number;
 }
 
+export type Sex = 'M' | 'F' | 'X'; // X = preferisce non dirlo
+
 export interface Profile {
   id: 'me';
   heightCm: number;
+  sex?: Sex;
   /** Lunedì in cui inizia la settimana 1 del programma. */
   programStart: ISODate;
   settings: Settings;

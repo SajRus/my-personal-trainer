@@ -5,6 +5,7 @@
 //  modificare questo file.
 // ============================================================================
 
+import { EXTRA_COOLDOWN, EXTRA_EXERCISES, EXTRA_WARMUP, RUN_IN_PLACE } from './exercises-extra';
 import type {
   DayDef,
   DayType,
@@ -12,6 +13,7 @@ import type {
   ExerciseDef,
   MuscleGroup,
   Settings,
+  Sex,
   TestDef,
   TestValues,
   TimedItem,
@@ -77,7 +79,16 @@ export const MUSCLES: MuscleGroup[] = ['petto', 'spalle', 'tricipiti', 'bicipiti
  * Valori provvisori da principiante, usati solo finché non si fanno i test guidati
  * (o se si sceglie di partire senza test). Nessun dato personale qui: ognuno inserisce i propri.
  */
-export const BASELINE_TESTS: TestValues = { pushups: 8, squat: 20, plank: 30, burpees: 8, crunch: 15 };
+export const BASELINE_TESTS: TestValues = { pushups: 7, squat: 19, plank: 30, burpees: 7, crunch: 15 };
+
+/** Stime da principiante per sesso (usate solo prima dei test: poi contano i risultati veri). */
+export const BASELINE_BY_SEX: Record<Sex, TestValues> = {
+  M: { pushups: 10, squat: 20, plank: 30, burpees: 8, crunch: 15 },
+  F: { pushups: 4, squat: 18, plank: 30, burpees: 6, crunch: 15 },
+  X: BASELINE_TESTS,
+};
+
+export const SEX_LABEL: Record<Sex, string> = { M: 'Uomo', F: 'Donna', X: 'Preferisco non dirlo' };
 
 // ---------------------------------------------------------------- attrezzatura: preset generici
 
@@ -136,7 +147,7 @@ export const EQUIPMENT_KIND_LABEL: Record<Equipment['kind'], string> = {
 
 // ---------------------------------------------------------------- esercizi
 
-export const EXERCISES: Record<string, ExerciseDef> = {
+const BASE_EXERCISES: Record<string, ExerciseDef> = {
   pushup: {
     id: 'pushup',
     name: 'Piegamenti',
@@ -472,7 +483,12 @@ export const EXERCISES: Record<string, ExerciseDef> = {
   },
 };
 
+/** Tutti gli esercizi: quelli base del programma + le alternative della rotazione (exercises-extra.ts). */
+export const EXERCISES: Record<string, ExerciseDef> = { ...BASE_EXERCISES, ...EXTRA_EXERCISES };
+
 // ---------------------------------------------------------------- giorni
+// Il primo esercizio di ogni giorno è fisso (su quello si misura la progressione e i test);
+// gli altri ruotano in automatico tra l'originale e le `alternatives`.
 
 export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
   A: {
@@ -481,8 +497,17 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
     focus: 'Petto, spalle, tricipiti',
     blocks: [
       { id: 'A1', exercises: ['pushup'], sets: 4, rest: 'long' },
-      { id: 'A2', exercises: ['pike'], sets: 3, rest: 'short' },
-      { id: 'A3', exercises: ['dip', 'lateralRaise'], sets: 3, rest: 'short' },
+      { id: 'A2', exercises: ['pike'], sets: 3, rest: 'short', alternatives: [['dbShoulderPress', 'bandShoulderPress', 'arnoldPress']] },
+      {
+        id: 'A3',
+        exercises: ['dip', 'lateralRaise'],
+        sets: 3,
+        rest: 'short',
+        alternatives: [
+          ['diamondPushup', 'overheadExt', 'kickback'],
+          ['bandLateralRaise', 'frontRaise'],
+        ],
+      },
     ],
   },
   B: {
@@ -491,8 +516,17 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
     focus: 'Quadricipiti, glutei, femorali',
     blocks: [
       { id: 'B1', exercises: ['squat'], sets: 4, rest: 'long' },
-      { id: 'B2', exercises: ['reverseLunge'], sets: 3, rest: 'short' },
-      { id: 'B3', exercises: ['legCurl', 'gluteBridge'], sets: 3, rest: 'short' },
+      { id: 'B2', exercises: ['reverseLunge'], sets: 3, rest: 'short', alternatives: [['splitSquat', 'stepUp', 'plieSquat']] },
+      {
+        id: 'B3',
+        exercises: ['legCurl', 'gluteBridge'],
+        sets: 3,
+        rest: 'short',
+        alternatives: [
+          ['rdl', 'bandGoodMorning'],
+          ['singleLegBridge', 'donkeyKick'],
+        ],
+      },
     ],
   },
   C: {
@@ -501,8 +535,26 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
     focus: 'Schiena, bicipiti, addominali',
     blocks: [
       { id: 'C1', exercises: ['bandRow'], sets: 4, rest: 'long' },
-      { id: 'C2', exercises: ['latPulldown', 'facePull'], sets: 3, rest: 'short' },
-      { id: 'C3', exercises: ['abWheel', 'plank'], sets: 3, rest: 'short' },
+      {
+        id: 'C2',
+        exercises: ['latPulldown', 'facePull'],
+        sets: 3,
+        rest: 'short',
+        alternatives: [
+          ['straightArmPulldown', 'oneArmRow'],
+          ['reverseFly', 'hammerCurl', 'dbCurl'],
+        ],
+      },
+      {
+        id: 'C3',
+        exercises: ['abWheel', 'plank'],
+        sets: 3,
+        rest: 'short',
+        alternatives: [
+          ['mountainClimbers', 'bicycleCrunch', 'russianTwist', 'deadBug', 'reverseCrunch', 'ballCrunch'],
+          ['sidePlank', 'superman'],
+        ],
+      },
     ],
   },
 };
@@ -576,6 +628,18 @@ export const COOLDOWN: TimedItem[] = [
     illustration: 'stretchHams',
     muscles: ['femorali'],
   },
+];
+
+/**
+ * Rose per riscaldamento e defaticamento: in ogni posizione la rotazione sceglie un elemento
+ * diverso a ogni sessione (il primo è quello originale).
+ */
+export const WARMUP_POOLS: TimedItem[][] = [[WARMUP[0], RUN_IN_PLACE], [WARMUP[1], ...EXTRA_WARMUP]];
+export const COOLDOWN_POOLS: TimedItem[][] = [
+  [COOLDOWN[0]],
+  [COOLDOWN[1], EXTRA_COOLDOWN.lats],
+  [COOLDOWN[2], EXTRA_COOLDOWN.quads],
+  [COOLDOWN[3], EXTRA_COOLDOWN.hams],
 ];
 
 export const ACTIVE_REST = {

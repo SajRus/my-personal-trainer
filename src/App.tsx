@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import type { TodayView } from './app/trainer';
 import { useAppData } from './app/useAppData';
+import { FigureContext } from './components/BodyMap';
 import { todayISO } from './domain/dates';
 import { Onboarding } from './features/onboarding/Onboarding';
 import { Settings } from './features/settings/Settings';
@@ -39,13 +40,15 @@ export default function App() {
   if (data === undefined) return <div className="flex h-full items-center justify-center text-slate-500">Caricamento…</div>;
   if (data === null) return <Onboarding onStartTests={startTest} />;
 
+  const withFigure = (node: JSX.Element) => <FigureContext.Provider value={data.profile.sex ?? 'X'}>{node}</FigureContext.Provider>;
+
   if (restarting) return <Onboarding restart={data} onDone={() => setRestarting(false)} onStartTests={startTest} />;
-  if (testing) return <TestRunner data={data} date={testing} onClose={() => setTesting(null)} />;
+  if (testing) return withFigure(<TestRunner data={data} date={testing} onClose={() => setTesting(null)} />);
   if (active?.view.workout) {
-    return <WorkoutPlayer data={data} date={active.date} workout={active.view.workout} onClose={() => setActive(null)} />;
+    return withFigure(<WorkoutPlayer data={data} date={active.date} workout={active.view.workout} onClose={() => setActive(null)} />);
   }
 
-  return (
+  return withFigure(
     <div className="flex min-h-full flex-col">
       <main className="safe-top mx-auto w-full max-w-md flex-1 px-4 pb-28 pt-4">
         {tab === 'today' && (

@@ -1,14 +1,17 @@
 // Figura del corpo (fronte e retro) con i muscoli colorabili. Disegno originale a forme
 // semplici, stile manichino. Il lato destro è lo specchio del sinistro.
 
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { MUSCLE_LABEL } from '../data/program';
 import type { MuscleMap } from '../domain/stats';
-import type { MuscleGroup } from '../domain/types';
+import type { MuscleGroup, Sex } from '../domain/types';
 
 type Shape =
-  | { d: string; m?: MuscleGroup; mirror?: boolean }
-  | { e: [number, number, number, number, number?]; m?: MuscleGroup; mirror?: boolean };
+  | { d: string; m?: MuscleGroup; mirror?: boolean; fill?: string }
+  | { e: [number, number, number, number, number?]; m?: MuscleGroup; mirror?: boolean; fill?: string };
+
+/** Sesso dell'utente per scegliere la sagoma (fornito da App). */
+export const FigureContext = createContext<Sex>('X');
 
 // ---------------------------------------------------------------- forme (viewBox 0 0 100 210)
 
@@ -50,6 +53,52 @@ const BACK: Shape[] = [
   ...LIMBS_NEUTRAL,
 ];
 
+// ---------------------------------------------------------------- sagoma femminile
+// Spalle più strette, vita più sottile, bacino più largo, capelli lunghi.
+
+const HAIR: Shape = { d: 'M40,15 Q39,3 50,3 Q61,3 60,15 L61.5,30 Q56,27 50,27 Q44,27 38.5,30 Z', fill: '#1a222d' };
+
+const LIMBS_NEUTRAL_F: Shape[] = [
+  { e: [23.5, 78, 4, 11, 10], mirror: true },
+  { e: [20, 95, 3.2, 4.8], mirror: true },
+  { e: [42, 164, 5, 4], mirror: true },
+  { e: [42, 203, 4.5, 3], mirror: true },
+];
+
+const FRONT_F: Shape[] = [
+  HAIR,
+  ...HEAD,
+  { e: [32, 38, 6.5, 6.5], m: 'spalle', mirror: true },
+  { d: 'M50,37 L50,51 Q43,57 37,52 Q33,46 36,41 Q42,35 50,37 Z', m: 'petto', mirror: true },
+  { e: [27.5, 55, 4.5, 10, 8], m: 'bicipiti', mirror: true },
+  { d: 'M43,61 Q43,56 47.5,56 L52.5,56 Q57,56 57,61 L57,89 Q57,94 52.5,94 L47.5,94 Q43,94 43,89 Z', m: 'core' },
+  { d: 'M37.5,55 Q41.5,57 42,60 L42,92 Q39.5,89 38.5,83 Q37,70 37.5,55 Z', m: 'core', mirror: true },
+  { d: 'M35,95 L65,95 Q67.5,106 62.5,113 L50,119 L37.5,113 Q32.5,106 35,95 Z' },
+  { d: 'M34.5,108 Q31,122 33.5,140 Q35.5,154 39,160 L46.5,160 Q48.5,140 48.5,122 L48,116 L37.5,112 Z', m: 'quadricipiti', mirror: true },
+  { d: 'M37.5,168 Q37,185 39.5,200 L44.5,200 Q47,185 46.5,168 Z', mirror: true },
+  ...LIMBS_NEUTRAL_F,
+];
+
+const BACK_F: Shape[] = [
+  ...HEAD,
+  HAIR,
+  { d: 'M43,28 L57,28 Q64,31 66,34 L57,40 L50,51 L43,40 L34,34 Q36,31 43,28 Z', m: 'schiena' },
+  { e: [32, 38, 6.5, 6.5], m: 'spalle', mirror: true },
+  { e: [27.5, 55, 4.5, 10, 8], m: 'tricipiti', mirror: true },
+  { d: 'M36.5,44 L43,41 L50,52 L50,78 Q44.5,80 40.5,76 Q36.5,62 36.5,44 Z', m: 'schiena', mirror: true },
+  { d: 'M40.5,78 Q45,81 50,80 Q55,81 59.5,78 L61,94 L39,94 Z', m: 'core' },
+  { d: 'M35,95 L50,96 L50,117 Q42,121 35.5,115 Q32,105 35,95 Z', m: 'glutei', mirror: true },
+  { d: 'M35,117 Q43,122 49,118 Q48.5,140 46.5,160 L39,160 Q35,150 34,135 Q33.5,125 35,117 Z', m: 'femorali', mirror: true },
+  { e: [42, 180, 4.8, 13], mirror: true },
+  ...LIMBS_NEUTRAL_F,
+];
+
+const FIGURES: Record<Sex, { front: Shape[]; back: Shape[] }> = {
+  M: { front: FRONT, back: BACK },
+  F: { front: FRONT_F, back: BACK_F },
+  X: { front: FRONT, back: BACK },
+};
+
 const NEUTRAL = '#243040';
 const OUTLINE = '#0b0f14';
 
@@ -88,7 +137,7 @@ function Figure({
   onPick: (m: MuscleGroup) => void;
 }) {
   const render = (s: Shape, i: number, mirrored: boolean) => {
-    const fill = (s.m && colorOf(s.m)) || NEUTRAL;
+    const fill = (s.m && colorOf(s.m)) || s.fill || NEUTRAL;
     return <ShapeEl key={`${mirrored ? 'r' : 'l'}${i}`} s={s} fill={fill} onPick={s.m ? () => onPick(s.m!) : undefined} />;
   };
   return (
@@ -116,11 +165,12 @@ export function BodyMap({
   className?: string;
 }) {
   const [picked, setPicked] = useState<MuscleGroup | null>(null);
+  const fig = FIGURES[useContext(FigureContext)];
   return (
     <div className={className}>
       <div className="flex justify-center gap-4">
-        <Figure shapes={FRONT} label="Fronte" colorOf={colorOf} onPick={setPicked} />
-        <Figure shapes={BACK} label="Retro" colorOf={colorOf} onPick={setPicked} />
+        <Figure shapes={fig.front} label="Fronte" colorOf={colorOf} onPick={setPicked} />
+        <Figure shapes={fig.back} label="Retro" colorOf={colorOf} onPick={setPicked} />
       </div>
       <p className="mt-1 min-h-[1.25rem] text-center text-sm text-slate-300" aria-live="polite">
         {picked ? `${MUSCLE_LABEL[picked]}${describe ? `: ${describe(picked)}` : ''}` : 'Tocca un muscolo per il nome'}

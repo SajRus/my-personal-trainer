@@ -8,6 +8,6 @@ export function minutes(totalSec: number): string {
 }
 
 export function targetLabel(value: number, metric: 'reps' | 'seconds', perSide?: boolean): string {
-  if (metric === 'seconds') return `${value} s`;
-  return perSide ? `${value} per gamba` : `${value} rip`;
+  if (metric === 'seconds') return perSide ? `${value} s per lato` : `${value} s`;
+  return perSide ? `${value} per lato` : `${value} rip`;
 }

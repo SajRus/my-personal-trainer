@@ -43,3 +43,27 @@ describe('primo avvio senza dati personali predefiniti', () => {
     expect(data.states.pushup.lastChange?.reason).toContain('provvisoria');
   });
 });
+
+describe('sesso', () => {
+  it('le stime provvisorie dipendono dal sesso e il sesso resta nel profilo', async () => {
+    const { BASELINE_BY_SEX } = await import('../src/data/program');
+    const make = async (sex: 'M' | 'F') => {
+      const repo = new DexieRepository(`sex-${Math.random()}`);
+      await setupProgram(repo, {
+        today: '2026-09-27',
+        programStart: '2026-09-28',
+        heightCm: 170,
+        weightKg: 65,
+        sex,
+        tests: BASELINE_BY_SEX[sex],
+        equipment: buildEquipment(['mat'], []),
+        provisional: true,
+      });
+      return (await loadAll(repo))!;
+    };
+    const f = await make('F');
+    const m = await make('M');
+    expect(f.profile.sex).toBe('F');
+    expect(f.states.pushup.target).toBeLessThan(m.states.pushup.target);
+  });
+});

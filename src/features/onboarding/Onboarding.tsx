@@ -2,17 +2,18 @@ import { useRef, useState, type ReactNode } from 'react';
 import { setupProgram, type AppData } from '../../app/trainer';
 import { Button, Card, NumericInput, Toggle } from '../../components/ui';
 import {
-  BASELINE_TESTS,
+  BASELINE_BY_SEX,
   buildEquipment,
-  COOLDOWN,
+  COOLDOWN_POOLS,
   DUMBBELL_CHOICES,
   EQUIPMENT_KIND_LABEL,
   EXERCISES,
+  SEX_LABEL,
   TESTS,
-  WARMUP,
+  WARMUP_POOLS,
 } from '../../data/program';
 import { formatLong, nearestMonday, todayISO } from '../../domain/dates';
-import type { BackupData, EquipmentKind, TestValues } from '../../domain/types';
+import type { BackupData, EquipmentKind, Sex, TestValues } from '../../domain/types';
 import { readFileAsText } from '../../lib/files';
 import { repo } from '../../storage';
 
@@ -27,7 +28,7 @@ function usedFor(kind: EquipmentKind): string[] {
     const kinds = [...ex.equipment, ...ex.variants.flatMap((v) => [...(v.loadKind ? [v.loadKind] : []), ...(v.extraEquipment ?? [])])];
     if (kinds.includes(kind)) names.add(ex.name.toLowerCase());
   }
-  for (const t of [...WARMUP, ...COOLDOWN]) if (t.equipment.includes(kind)) names.add(t.name.toLowerCase());
+  for (const t of [...WARMUP_POOLS.flat(), ...COOLDOWN_POOLS.flat()]) if (t.equipment.includes(kind)) names.add(t.name.toLowerCase());
   return [...names];
 }
 
@@ -102,6 +103,7 @@ export function Onboarding({
 
   const lastTest = restart?.tests[restart.tests.length - 1]?.values;
   const lastWeight = restart?.bodyWeight[restart.bodyWeight.length - 1]?.kg;
+  const [sex, setSex] = useState<Sex | null>(restart?.profile.sex ?? null);
   const [heightCm, setHeight] = useState(restart?.profile.heightCm ?? NaN);
   const [weightKg, setWeight] = useState(lastWeight ?? NaN);
   const [kinds, setKinds] = useState<EquipmentKind[]>(['mat']);
@@ -113,7 +115,7 @@ export function Onboarding({
   const [programStart, setStart] = useState(restart ? today : nearestMonday(today));
   const [saving, setSaving] = useState(false);
 
-  const profileValid = heightCm > 0 && weightKg > 0;
+  const profileValid = sex !== null && heightCm > 0 && weightKg > 0;
   const testsValid = mode === 'guided' || Object.values(tests).every((v) => Number.isFinite(v) && v >= 0);
   const toggleKind = (k: EquipmentKind, on: boolean) => setKinds((prev) => (on ? [...prev, k] : prev.filter((x) => x !== k)));
 
@@ -127,7 +129,8 @@ export function Onboarding({
       programStart,
       heightCm,
       weightKg,
-      tests: guided ? (lastTest ?? BASELINE_TESTS) : tests,
+      sex: sex ?? 'X',
+      tests: guided ? (lastTest ?? BASELINE_BY_SEX[sex ?? 'X']) : tests,
       provisional: guided, // i valori veri arrivano dai test guidati
       equipment: restart ? undefined : buildEquipment(kinds, kinds.includes('dumbbell') ? dumbbellKg : []),
     });
@@ -159,6 +162,24 @@ export function Onboarding({
             title={restart ? 'Ricomincia il programma' : 'Il tuo profilo'}
             text={restart ? 'Nuovi test e nuova data di inizio. Storico, attrezzatura e impostazioni restano.' : 'Servono per seguire i tuoi progressi. Restano solo su questo telefono.'}
           />
+          <Card>
+            <p className="mb-2 text-lg">Sesso</p>
+            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Sesso">
+              {(['F', 'M', 'X'] as Sex[]).map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  role="radio"
+                  aria-checked={sex === k}
+                  onClick={() => setSex(k)}
+                  className={`min-h-[3.25rem] rounded-xl border-2 px-2 text-base ${sex === k ? 'border-accent bg-accent/15' : 'border-line'}`}
+                >
+                  {SEX_LABEL[k]}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-sm text-slate-500">Serve per le stime di partenza prima dei test e per la figura dei muscoli.</p>
+          </Card>
           <Card>
             <NumberField label="Altezza" value={heightCm} onChange={setHeight} suffix="cm" placeholder="es. 175" />
             <NumberField label="Peso" value={weightKg} onChange={setWeight} step={0.1} suffix="kg" placeholder="es. 70" />

@@ -3,7 +3,7 @@ import { saveTestResult, type AppData, type TestOutcome } from '../../app/traine
 import { ExerciseImage } from '../../components/ExerciseImage';
 import { ExerciseInfo } from '../../components/ExerciseInfo';
 import { Button, Card, Sheet, Stepper } from '../../components/ui';
-import { BASELINE_TESTS, EXERCISES, TESTS } from '../../data/program';
+import { BASELINE_BY_SEX, EXERCISES, TESTS } from '../../data/program';
 import type { ISODate, TestDef, TestValues } from '../../domain/types';
 import { countdownBeep, endBeep } from '../../lib/audio';
 import { mmss } from '../../lib/format';
@@ -47,7 +47,7 @@ function announce(phase: Phase): string {
 export function TestRunner({ data, date, onClose }: { data: AppData; date: ISODate; onClose: () => void }) {
   const settings = data.profile.settings;
   const hasPrevious = data.tests.length > 0;
-  const last = data.tests[data.tests.length - 1]?.values ?? BASELINE_TESTS;
+  const last = data.tests[data.tests.length - 1]?.values ?? BASELINE_BY_SEX[data.profile.sex ?? 'X'];
   const [phase, setPhase] = useState<Phase>({ kind: 'prep', i: 0 });
   const [values, setValues] = useState<TestValues>({ ...last });
   const [now, setNow] = useState(Date.now());

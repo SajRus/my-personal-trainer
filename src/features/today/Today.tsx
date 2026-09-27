@@ -127,6 +127,9 @@ function WorkoutPreview({
           </div>
           <Badge tone="accent">≈ {minutes(w.estimatedSec)}</Badge>
         </div>
+        <p className="mt-2 text-sm text-slate-400">
+          🔀 Il primo esercizio è fisso; gli altri, il riscaldamento e gli allungamenti cambiano a ogni sessione.
+        </p>
         {view.day.deload && <p className="mt-3 rounded-xl bg-rest/10 p-3 text-rest">Settimana di scarico: volume ridotto del 40%.</p>}
         {view.when === 'future' && (
           <p className="mt-3 rounded-xl bg-line p-3 text-slate-300">
@@ -154,6 +157,7 @@ function WorkoutPreview({
                     ex={ex}
                     sets={b.sets}
                     data={data}
+                    isNew={data.sessions.length > 0 && !data.sessions.some((s) => s.sets.some((x) => x.exerciseId === ex.def.id))}
                     reason={view.when === 'past' ? undefined : w.prepared[ex.def.id].lastChange?.reason}
                     onInfo={() => onInfo(infoFromExercise(ex.def, ex.variant))}
                   />
@@ -207,19 +211,24 @@ function ExerciseRow({
   data,
   reason,
   onInfo,
+  isNew,
 }: {
   ex: PlannedExercise;
   sets: number;
   data: AppData;
   reason?: string;
   onInfo: () => void;
+  isNew?: boolean;
 }) {
   const load = data.equipment.find((e) => e.id === ex.loadId);
   return (
     <button type="button" onClick={onInfo} className="flex items-center gap-3 text-left">
       <ExerciseImage illustration={ex.def.illustration} className="h-16 w-20 shrink-0" paused />
       <div className="min-w-0 flex-1">
-        <div className="font-semibold leading-tight">{ex.variant.name}</div>
+        <div className="font-semibold leading-tight">
+          {ex.variant.name}
+          {isNew && <span className="ml-2 inline-block rounded-full bg-rest/20 px-2 py-0.5 align-middle text-xs font-semibold text-rest">Novità</span>}
+        </div>
         <div className="text-lg text-accent">
           {sets} × {targetLabel(ex.target, ex.def.metric, ex.def.perSide)}
         </div>

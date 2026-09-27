@@ -1,7 +1,8 @@
 // Trasforma un giorno del programma in una sequenza lineare di fasi che il
 // player guidato scorre in automatico.
 
-import { COOLDOWN, DAYS, EXERCISES, RULES, WARMUP } from '../data/program';
+import { DAYS, EXERCISES, RULES } from '../data/program';
+import { defaultChoice, type DayChoice } from './rotation';
 import { sessionTarget, variantOf } from './progression';
 import type {
   Equipment,
@@ -33,6 +34,8 @@ export interface SessionPlan {
   dayType: WorkoutDayType;
   deload: boolean;
   blocks: PlannedBlock[];
+  warmup: TimedItem[];
+  cooldown: TimedItem[];
 }
 
 export function buildPlan(
@@ -40,16 +43,19 @@ export function buildPlan(
   states: Record<string, ExerciseState>,
   settings: Settings,
   deload: boolean,
+  choice: DayChoice = defaultChoice(dayType),
 ): SessionPlan {
   const day = DAYS[dayType];
   return {
     dayType,
     deload,
-    blocks: day.blocks.map((b) => ({
+    warmup: choice.warmup,
+    cooldown: choice.cooldown,
+    blocks: day.blocks.map((b, bi) => ({
       id: b.id,
       sets: b.sets,
       restSec: b.rest === 'long' ? settings.restLongSec : settings.restShortSec,
-      exercises: b.exercises.map((id) => {
+      exercises: choice.blocks[bi].map((id) => {
         const def = EXERCISES[id];
         const state = states[id];
         if (!state) throw new Error(`Stato mancante per l'esercizio ${id}`);
@@ -86,7 +92,7 @@ export type Step =
 
 export function buildSteps(plan: SessionPlan, settings: Settings): Step[] {
   const steps: Step[] = [];
-  for (const item of WARMUP) steps.push({ kind: 'timed', phase: 'warmup', item, seconds: item.seconds });
+  for (const item of plan.warmup) steps.push({ kind: 'timed', phase: 'warmup', item, seconds: item.seconds });
 
   plan.blocks.forEach((block, bi) => {
     const superset = block.exercises.length > 1;
@@ -117,7 +123,7 @@ export function buildSteps(plan: SessionPlan, settings: Settings): Step[] {
     }
   });
 
-  for (const item of COOLDOWN) steps.push({ kind: 'timed', phase: 'cooldown', item, seconds: item.seconds });
+  for (const item of plan.cooldown) steps.push({ kind: 'timed', phase: 'cooldown', item, seconds: item.seconds });
   return steps;
 }
 
@@ -128,9 +134,10 @@ export function stepSeconds(step: Step): number {
     case 'rest':
       return step.seconds;
     case 'work': {
-      if (step.metric === 'seconds') return step.target;
       const def = EXERCISES[step.exerciseId];
-      return step.target * RULES.secondsPerRep * (def.perSide ? 2 : 1);
+      const sides = def.perSide ? 2 : 1;
+      if (step.metric === 'seconds') return step.target * sides;
+      return step.target * RULES.secondsPerRep * sides;
     }
   }
 }
@@ -157,7 +164,7 @@ export function gearForPlan(plan: SessionPlan, equipment: Equipment[]): GearItem
     if (anchor && !g.anchors.includes(anchor)) g.anchors.push(anchor);
     map.set(kind, g);
   };
-  for (const w of WARMUP) w.equipment.forEach((k) => add(k));
+  for (const w of plan.warmup) w.equipment.forEach((k) => add(k));
   for (const b of plan.blocks) {
     for (const ex of b.exercises) {
       const kinds = [...ex.def.equipment, ...(ex.variant.extraEquipment ?? [])];
@@ -167,6 +174,6 @@ export function gearForPlan(plan: SessionPlan, equipment: Equipment[]): GearItem
       }
     }
   }
-  for (const c of COOLDOWN) c.equipment.forEach((k) => add(k));
+  for (const c of plan.cooldown) c.equipment.forEach((k) => add(k));
   return [...map.values()];
 }

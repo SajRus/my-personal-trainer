@@ -6,6 +6,7 @@ App personale per allenarsi in camera: **15-20 minuti al giorno, 6 giorni su 7**
 
 - **Oggi**: allenamento del giorno (A spinta, B gambe, C tirata e core, riposo, test), durata stimata, serie e target, attrezzi da preparare con l'ancoraggio degli elastici, muscoli coinvolti. Con ◀ ▶, uno swipe o la striscia della settimana vedi anche i **giorni passati** (cosa hai fatto) e **futuri** (cosa preparare).
 - **Allenamento guidato**: riscaldamento → esercizi e superserie → recuperi → defaticamento, tutto in automatico. Timer grande, beep a 3-2-1, **voce in italiano**, schermo sempre acceso. L'unico tocco è "✓ Fatto" per confermare le ripetizioni (già impostate sul target). Scheda di ogni esercizio con foto, muscoli e 3 consigli. Riepilogo finale col confronto rispetto alla volta precedente.
+- **Allenamenti sempre diversi**: il primo esercizio di ogni giorno è fisso (su quello si misurano progressione e test); gli altri, il riscaldamento e gli allungamenti ruotano in automatico tra circa 40 esercizi, scegliendo solo quelli possibili con l'attrezzatura che hai. Gli esercizi mai fatti hanno il badge "Novità".
 - **Progressione automatica** (con il motivo di ogni modifica): +1 a settimana se completi tutto, stesso target se lo manchi, −10% dopo 2 volte di fila, elastico successivo quando arrivi al limite, ricalcolo dopo i test, scarico nella settimana 8.
 - **Test guidati**: i 5 test in sequenza con 3 minuti di recupero, poi ricalcolo dei target.
 - **Progressi**: serie di giorni consecutivi, calendario, muscoli allenati nella settimana, grafici dei test, volume settimanale, peso corporeo, storico di carichi ed elastici.
@@ -30,14 +31,15 @@ npm run preview    # prova la build
 
 ## Modificare il programma
 
-Tutto sta in due file di configurazione. La logica li legge senza bisogno di altre modifiche.
+Tutto sta in tre file di configurazione. La logica li legge senza bisogno di altre modifiche.
 
 | File | Contenuto |
 |---|---|
 | `src/data/program.ts` | esercizi e varianti (partenza, massimo, incremento, elastico o peso), muscoli principali e secondari, giorni A/B/C, riscaldamento, defaticamento, test, regole (settimane, scarico, −10%…), attrezzatura e impostazioni di default |
+| `src/data/exercises-extra.ts` | esercizi alternativi della rotazione automatica, riscaldamenti e allungamenti extra |
 | `src/data/media.ts` | foto di ogni esercizio con fonte e licenza |
 
-Se aggiungi un esercizio a un giorno, l'app gli crea lo stato di partenza dall'ultimo test.
+Per aggiungere varietà: scrivi l'esercizio in `exercises-extra.ts` (con la sua foto in `media.ts`) e aggiungilo alle `alternatives` del blocco giusto in `DAYS` (`program.ts`). La rotazione lo inserirà da sola. L'app gli crea lo stato di partenza dall'ultimo test.
 
 ## Deploy
 
@@ -91,7 +93,7 @@ Service worker (offline), installazione come app e Screen Wake Lock funzionano *
 ### Se la usa qualcun altro
 
 Ogni persona usa l'app **sul proprio telefono** e ha i propri dati: nessuno vede allenamenti, test o peso degli altri, perché tutto resta in locale e non passa da un server. Al primo avvio c'è una configurazione a passi, **senza dati predefiniti**:
-1. **Profilo**: altezza e peso.
+1. **Profilo**: sesso (uomo, donna o preferisco non dirlo: serve per le stime prima dei test e per la figura dei muscoli), altezza e peso.
 2. **Attrezzatura**: cosa si ha, compresi i pesi dei manubri. Gli elastici partono da 3 livelli generici, modificabili in Impostazioni.
 3. **Livello**: test guidati subito (consigliato) oppure inserimento dei risultati di un test recente.
 4. **Data di inizio**.
@@ -113,7 +115,7 @@ Su iPhone le notifiche push di una web app richiedono un server. Le alternative 
 
 ```
 src/
-  data/          program.ts (programma), media.ts (foto)
+  data/          program.ts (programma), exercises-extra.ts (rotazione), media.ts (foto)
   domain/        logica pura e testata: date, calendario, progressione, sessione, statistiche
   storage/       interfaccia Repository + implementazione Dexie (IndexedDB)
   app/           casi d'uso (primo avvio, oggi, fine allenamento, test) e hook dei dati
