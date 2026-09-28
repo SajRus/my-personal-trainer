@@ -13,6 +13,14 @@ import type {
   TestResult,
 } from '../domain/types';
 
+export interface SnapshotMeta {
+  id: number;
+  createdAt: string;
+  reason: string;
+  build?: string;
+  sessions: number;
+}
+
 export interface Repository {
   getProfile(): Promise<Profile | null>;
   saveProfile(p: Profile): Promise<void>;
@@ -38,6 +46,13 @@ export interface Repository {
   setActiveRest(date: ISODate, done: boolean): Promise<void>;
 
   exportAll(): Promise<BackupData>;
-  importAll(data: BackupData): Promise<void>;
+  /** Sostituisce i dati con quelli del backup (accetta anche versioni vecchie). Prima salva una copia di sicurezza. */
+  importAll(data: unknown): Promise<void>;
+  /** Cancella i dati (non le copie di sicurezza). Prima salva una copia di sicurezza. */
   clearAll(): Promise<void>;
+
+  /** Copie di sicurezza automatiche sul dispositivo (le ultime 5). */
+  saveSnapshot(reason: string, build?: string): Promise<void>;
+  listSnapshots(): Promise<SnapshotMeta[]>;
+  getSnapshot(id: number): Promise<BackupData | null>;
 }

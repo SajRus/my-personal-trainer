@@ -13,6 +13,7 @@ import { countdownBeep, endBeep, unlockAudio } from '../../lib/audio';
 import { mmss, targetLabel } from '../../lib/format';
 import { speak, stopSpeech, unlockSpeech } from '../../lib/speech';
 import { useWakeLock } from '../../lib/useWakeLock';
+import { useWorkoutMusic } from '../../lib/useWorkoutMusic';
 import { repo } from '../../storage';
 import { Summary } from './Summary';
 
@@ -75,6 +76,14 @@ export function WorkoutPlayer({
   const stepRef = useRef(step);
   stepRef.current = step;
   useWakeLock(!result);
+  const [musicMuted, setMusicMuted] = useState(false);
+  const hasMusic = settings.music === undefined || settings.music === 'energia' || settings.music === 'chill';
+  useWorkoutMusic(settings, {
+    active: !result,
+    paused,
+    muted: musicMuted,
+    mode: step.kind === 'work' ? 'work' : step.kind === 'rest' ? 'rest' : 'calm',
+  });
 
   const draft = useMemo(() => {
     if (draftState?.index === index) return draftState;
@@ -265,7 +274,19 @@ export function WorkoutPlayer({
             ✕
           </button>
           <span className={`text-sm font-semibold uppercase tracking-wide ${phase.color}`}>{phase.label}</span>
-          <span className="w-11 text-right text-sm tabular-nums text-slate-400">{mmss(elapsed)}</span>
+          <span className="flex items-center gap-2">
+            {hasMusic && (
+              <button
+                type="button"
+                aria-label={musicMuted ? 'Attiva la musica' : 'Spegni la musica'}
+                className="h-11 w-11 rounded-full bg-line text-lg"
+                onClick={() => setMusicMuted((m) => !m)}
+              >
+                {musicMuted ? '🔇' : '🎵'}
+              </button>
+            )}
+            <span className="w-11 text-right text-sm tabular-nums text-slate-400">{mmss(elapsed)}</span>
+          </span>
         </div>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-line">
           <div className="h-full bg-accent transition-all" style={{ width: `${(index / steps.length) * 100}%` }} />

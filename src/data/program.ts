@@ -5,7 +5,7 @@
 //  modificare questo file.
 // ============================================================================
 
-import { EXTRA_COOLDOWN, EXTRA_EXERCISES, EXTRA_WARMUP, RUN_IN_PLACE } from './exercises-extra';
+import { EXTRA_COOLDOWN, EXTRA_EXERCISES, EXTRA_WARMUP, FOAM_ROLLER, JUMP_ROPE, RUN_IN_PLACE } from './exercises-extra';
 import type {
   DayDef,
   DayType,
@@ -45,6 +45,8 @@ export const DEFAULT_SETTINGS: Settings = {
   restShortSec: 45,
   restBetweenTestsSec: 180,
   prepSec: 10,
+  music: 'energia',
+  musicVolume: 50,
 };
 
 // ---------------------------------------------------------------- gruppi muscolari per i grafici
@@ -114,7 +116,22 @@ export const EQUIPMENT_PRESETS: Record<Equipment['kind'], Equipment[]> = {
   'ab-wheel': [{ id: 'ab-wheel', kind: 'ab-wheel', name: 'Ruota per addominali', level: 1 }],
   bike: [{ id: 'bike', kind: 'bike', name: 'Cyclette', level: 1 }],
   chair: [{ id: 'chair', kind: 'chair', name: 'Sedia stabile', level: 1 }],
+  kettlebell: [], // si scelgono i pesi
+  'pullup-bar': [{ id: 'pullup-bar', kind: 'pullup-bar', name: 'Sbarra per trazioni', level: 1 }],
+  suspension: [{ id: 'suspension', kind: 'suspension', name: 'TRX / cinghie di sospensione', level: 1 }],
+  'jump-rope': [{ id: 'jump-rope', kind: 'jump-rope', name: 'Corda per saltare', level: 1 }],
+  'foam-roller': [{ id: 'foam-roller', kind: 'foam-roller', name: 'Rullo (foam roller)', level: 1 }],
 };
+
+/** Attrezzi che si comprano "a peso": si scelgono i kg (manubri, kettlebell). */
+export const WEIGHT_KINDS: Equipment['kind'][] = ['dumbbell', 'kettlebell'];
+
+/** Pesi dei kettlebell proposti nella configurazione iniziale (kg). */
+export const KETTLEBELL_CHOICES = [4, 6, 8, 10, 12, 14, 16, 20, 24];
+
+export function kettlebell(kg: number): Equipment {
+  return { id: `kb-${kg}`, kind: 'kettlebell', name: `Kettlebell ${String(kg).replace('.', ',')} kg`, level: kg, quantity: 1 };
+}
 
 /** Pesi dei manubri proposti nella configurazione iniziale (kg). */
 export const DUMBBELL_CHOICES = [1, 2, 3, 4, 5, 6, 8, 10, 12];
@@ -123,11 +140,12 @@ export function dumbbell(kg: number): Equipment {
   return { id: `db-${kg}`, kind: 'dumbbell', name: `Manubri ${String(kg).replace('.', ',')} kg`, level: kg, quantity: 2 };
 }
 
-/** Attrezzatura a partire dai tipi posseduti e dai pesi dei manubri. */
-export function buildEquipment(kinds: Equipment['kind'][], dumbbellKg: number[]): Equipment[] {
+/** Attrezzatura a partire dai tipi posseduti e dai pesi di manubri e kettlebell. */
+export function buildEquipment(kinds: Equipment['kind'][], dumbbellKg: number[], kettlebellKg: number[] = []): Equipment[] {
   const out: Equipment[] = [];
   for (const k of kinds) {
     if (k === 'dumbbell') out.push(...[...dumbbellKg].sort((a, b) => a - b).map(dumbbell));
+    else if (k === 'kettlebell') out.push(...[...kettlebellKg].sort((a, b) => a - b).map(kettlebell));
     else out.push(...EQUIPMENT_PRESETS[k]);
   }
   return out;
@@ -143,6 +161,11 @@ export const EQUIPMENT_KIND_LABEL: Record<Equipment['kind'], string> = {
   'ab-wheel': 'Ab wheel',
   bike: 'Cyclette',
   chair: 'Sedia',
+  kettlebell: 'Kettlebell',
+  'pullup-bar': 'Sbarra per trazioni',
+  suspension: 'TRX / cinghie di sospensione',
+  'jump-rope': 'Corda per saltare',
+  'foam-roller': 'Rullo (foam roller)',
 };
 
 // ---------------------------------------------------------------- esercizi
@@ -516,14 +539,20 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
     focus: 'Quadricipiti, glutei, femorali',
     blocks: [
       { id: 'B1', exercises: ['squat'], sets: 4, rest: 'long' },
-      { id: 'B2', exercises: ['reverseLunge'], sets: 3, rest: 'short', alternatives: [['splitSquat', 'stepUp', 'plieSquat']] },
+      {
+        id: 'B2',
+        exercises: ['reverseLunge'],
+        sets: 3,
+        rest: 'short',
+        alternatives: [['splitSquat', 'stepUp', 'plieSquat', 'gobletSquat', 'trxSplitSquat']],
+      },
       {
         id: 'B3',
         exercises: ['legCurl', 'gluteBridge'],
         sets: 3,
         rest: 'short',
         alternatives: [
-          ['rdl', 'bandGoodMorning'],
+          ['rdl', 'bandGoodMorning', 'kbSwing'],
           ['singleLegBridge', 'donkeyKick'],
         ],
       },
@@ -534,14 +563,15 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
     name: 'Giorno C — Tirata e core',
     focus: 'Schiena, bicipiti, addominali',
     blocks: [
-      { id: 'C1', exercises: ['bandRow'], sets: 4, rest: 'long' },
+      // senza elastici il rematore principale diventa uno di questi (solo se possibile)
+      { id: 'C1', exercises: ['bandRow'], sets: 4, rest: 'long', fallbacks: [['trxRow', 'oneArmRow', 'kbRow']] },
       {
         id: 'C2',
         exercises: ['latPulldown', 'facePull'],
         sets: 3,
         rest: 'short',
         alternatives: [
-          ['straightArmPulldown', 'oneArmRow'],
+          ['straightArmPulldown', 'oneArmRow', 'pullUp', 'chinUp', 'trxRow', 'kbRow'],
           ['reverseFly', 'hammerCurl', 'dbCurl'],
         ],
       },
@@ -551,7 +581,7 @@ export const DAYS: Record<'A' | 'B' | 'C', DayDef> = {
         sets: 3,
         rest: 'short',
         alternatives: [
-          ['mountainClimbers', 'bicycleCrunch', 'russianTwist', 'deadBug', 'reverseCrunch', 'ballCrunch'],
+          ['mountainClimbers', 'bicycleCrunch', 'russianTwist', 'deadBug', 'reverseCrunch', 'ballCrunch', 'hangingKneeRaise', 'trxKneeTuck'],
           ['sidePlank', 'superman'],
         ],
       },
@@ -634,12 +664,12 @@ export const COOLDOWN: TimedItem[] = [
  * Rose per riscaldamento e defaticamento: in ogni posizione la rotazione sceglie un elemento
  * diverso a ogni sessione (il primo è quello originale).
  */
-export const WARMUP_POOLS: TimedItem[][] = [[WARMUP[0], RUN_IN_PLACE], [WARMUP[1], ...EXTRA_WARMUP]];
+export const WARMUP_POOLS: TimedItem[][] = [[WARMUP[0], RUN_IN_PLACE, JUMP_ROPE], [WARMUP[1], ...EXTRA_WARMUP]];
 export const COOLDOWN_POOLS: TimedItem[][] = [
   [COOLDOWN[0]],
-  [COOLDOWN[1], EXTRA_COOLDOWN.lats],
-  [COOLDOWN[2], EXTRA_COOLDOWN.quads],
-  [COOLDOWN[3], EXTRA_COOLDOWN.hams],
+  [COOLDOWN[1], EXTRA_COOLDOWN.lats, FOAM_ROLLER.lats],
+  [COOLDOWN[2], EXTRA_COOLDOWN.quads, FOAM_ROLLER.quads],
+  [COOLDOWN[3], EXTRA_COOLDOWN.hams, FOAM_ROLLER.hams],
 ];
 
 export const ACTIVE_REST = {

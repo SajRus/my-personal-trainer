@@ -50,6 +50,7 @@ export function nextLoad(equipment: Equipment[], kind: EquipmentKind, currentId:
 
 function loadLabel(kind: EquipmentKind, e: Equipment): string {
   if (kind === 'dumbbell') return `ai ${e.name.toLowerCase()}`;
+  if (kind === 'kettlebell') return `al ${e.name.toLowerCase()}`;
   if (kind === 'mini-band') return `alla mini band «${e.name}»`;
   return `all'elastico ${e.name}`;
 }

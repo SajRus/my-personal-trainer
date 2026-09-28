@@ -8,7 +8,8 @@ import { Settings } from './features/settings/Settings';
 import { TestRunner } from './features/tests/TestRunner';
 import { Today } from './features/today/Today';
 import { unlockMedia, WorkoutPlayer } from './features/workout/WorkoutPlayer';
-import { requestPersistentStorage } from './storage';
+import { prepareAudioSession } from './lib/useWorkoutMusic';
+import { autoSnapshot, requestPersistentStorage } from './storage';
 
 // I grafici (Recharts) pesano: si caricano solo quando apri Progressi (restano comunque in cache offline).
 const Progress = lazy(() => import('./features/progress/Progress').then((m) => ({ default: m.Progress })));
@@ -30,9 +31,11 @@ export default function App() {
 
   useEffect(() => {
     void requestPersistentStorage();
+    void autoSnapshot();
   }, []);
 
   const startTest = () => {
+    if (data) prepareAudioSession(data.profile.settings);
     unlockMedia();
     setTesting(todayISO());
   };
@@ -55,6 +58,7 @@ export default function App() {
           <Today
             data={data}
             onStart={(view) => {
+              prepareAudioSession(data.profile.settings);
               unlockMedia(); // iOS: audio e voce si sbloccano solo dentro un tocco
               setActive({ view, date: todayISO() });
             }}

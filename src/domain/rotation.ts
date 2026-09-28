@@ -62,8 +62,15 @@ export function chooseDay(dayType: WorkoutDayType, date: ISODate, programStart: 
     blocks: day.blocks.map((b) =>
       b.exercises.map((id, i) => {
         const pool = [id, ...(b.alternatives?.[i] ?? [])];
+        const feasible = (x: string) => canDoExercise(EXERCISES[x], owned);
+        // se nulla è possibile (es. niente elastici), si prova con le riserve della posizione
+        const fallback = b.fallbacks?.[i] ?? [];
+        if (!pool.some(feasible) && fallback.some(feasible)) {
+          // la riserva resta sempre la stessa: su quella si misura la progressione
+          return pick(fallback, 0, feasible);
+        }
         // l'offset per posizione evita che tutte le rose avanzino "in coro"
-        return pick(pool, n + i, (x) => canDoExercise(EXERCISES[x], owned));
+        return pick(pool, n + i, feasible);
       }),
     ),
     // riscaldamento e defaticamento cambiano ogni giorno: si usa il numero di giorni dall'inizio

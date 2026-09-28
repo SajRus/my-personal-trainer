@@ -9,6 +9,7 @@ import { countdownBeep, endBeep } from '../../lib/audio';
 import { mmss } from '../../lib/format';
 import { speak, stopSpeech } from '../../lib/speech';
 import { useWakeLock } from '../../lib/useWakeLock';
+import { useWorkoutMusic } from '../../lib/useWorkoutMusic';
 import { repo } from '../../storage';
 
 type Phase =
@@ -58,6 +59,14 @@ export function TestRunner({ data, date, onClose }: { data: AppData; date: ISODa
   const lastBeep = useRef(Infinity);
   const extra = useRef(0); // secondi aggiunti/tolti al recupero
   useWakeLock(!outcome);
+  const [musicMuted, setMusicMuted] = useState(false);
+  const hasMusic = settings.music === undefined || settings.music === 'energia' || settings.music === 'chill';
+  useWorkoutMusic(settings, {
+    active: !outcome,
+    paused: false,
+    muted: musicMuted,
+    mode: phase.kind === 'run' ? 'work' : phase.kind === 'rest' ? 'rest' : 'calm',
+  });
 
   const total = countdown(phase, settings.prepSec, settings.restBetweenTestsSec);
   const elapsed = (now - phaseStart.current) / 1000;
@@ -137,7 +146,18 @@ export function TestRunner({ data, date, onClose }: { data: AppData; date: ISODa
           <span className="text-sm font-semibold uppercase tracking-wide text-warn">
             Test {phase.i + 1} di {TESTS.length}
           </span>
-          <span className="w-11" />
+          {hasMusic ? (
+            <button
+              type="button"
+              aria-label={musicMuted ? 'Attiva la musica' : 'Spegni la musica'}
+              className="h-11 w-11 rounded-full bg-line text-lg"
+              onClick={() => setMusicMuted((m) => !m)}
+            >
+              {musicMuted ? '🔇' : '🎵'}
+            </button>
+          ) : (
+            <span className="w-11" />
+          )}
         </div>
         <div className="mt-3 grid grid-cols-5 gap-1">
           {TESTS.map((x, i) => (

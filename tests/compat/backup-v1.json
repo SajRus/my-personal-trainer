@@ -1,0 +1,3141 @@
+{
+  "app": "myPersonalTrainer",
+  "version": 1,
+  "exportedAt": "2026-10-07T20:00:00.000Z",
+  "profile": {
+    "id": "me",
+    "heightCm": 170,
+    "sex": "X",
+    "programStart": "2026-09-28",
+    "settings": {
+      "reminderTime": "07:30",
+      "voice": true,
+      "sounds": true,
+      "restLongSec": 60,
+      "restShortSec": 45,
+      "restBetweenTestsSec": 180,
+      "prepSec": 10
+    },
+    "createdAt": "2026-09-28T19:42:52.716Z"
+  },
+  "equipment": [
+    {
+      "id": "ab-wheel",
+      "kind": "ab-wheel",
+      "name": "Ruota per addominali",
+      "level": 1
+    },
+    {
+      "id": "ball",
+      "kind": "ball",
+      "name": "Palla da pilates",
+      "level": 1
+    },
+    {
+      "id": "bike",
+      "kind": "bike",
+      "name": "Cyclette",
+      "level": 1
+    },
+    {
+      "id": "chair",
+      "kind": "chair",
+      "name": "Sedia stabile",
+      "level": 1
+    },
+    {
+      "id": "db-1",
+      "kind": "dumbbell",
+      "name": "Manubri 1 kg",
+      "level": 1,
+      "quantity": 2
+    },
+    {
+      "id": "db-2",
+      "kind": "dumbbell",
+      "name": "Manubri 2 kg",
+      "level": 2,
+      "quantity": 2
+    },
+    {
+      "id": "flat-light",
+      "kind": "flat-band",
+      "name": "Fascia leggera",
+      "color": "#a3e635",
+      "level": 1
+    },
+    {
+      "id": "flat-medium",
+      "kind": "flat-band",
+      "name": "Fascia media",
+      "color": "#f97316",
+      "level": 2
+    },
+    {
+      "id": "mat",
+      "kind": "mat",
+      "name": "Tappetino",
+      "level": 1
+    },
+    {
+      "id": "mini-hard",
+      "kind": "mini-band",
+      "name": "Mini band dura",
+      "color": "#a855f7",
+      "level": 3
+    },
+    {
+      "id": "mini-light",
+      "kind": "mini-band",
+      "name": "Mini band leggera",
+      "color": "#facc15",
+      "level": 1
+    },
+    {
+      "id": "mini-medium",
+      "kind": "mini-band",
+      "name": "Mini band media",
+      "color": "#22c55e",
+      "level": 2
+    },
+    {
+      "id": "tube-black",
+      "kind": "tube-band",
+      "name": "Nero – molto duro",
+      "color": "#6b7280",
+      "level": 4
+    },
+    {
+      "id": "tube-blue",
+      "kind": "tube-band",
+      "name": "Blu – duro",
+      "color": "#3b82f6",
+      "level": 3
+    },
+    {
+      "id": "tube-red",
+      "kind": "tube-band",
+      "name": "Rosso – medio",
+      "color": "#ef4444",
+      "level": 2
+    },
+    {
+      "id": "tube-yellow",
+      "kind": "tube-band",
+      "name": "Giallo – leggero",
+      "color": "#eab308",
+      "level": 1
+    }
+  ],
+  "bodyWeight": [
+    {
+      "date": "2026-09-27",
+      "kg": 70
+    },
+    {
+      "date": "2026-10-05",
+      "kg": 69.4
+    }
+  ],
+  "tests": [
+    {
+      "id": "8f92a306-f756-4e53-8f30-870d69ebc785",
+      "date": "2026-09-27",
+      "values": {
+        "pushups": 11,
+        "squat": 20,
+        "plank": 45,
+        "burpees": 10,
+        "crunch": 15
+      },
+      "source": "initial"
+    },
+    {
+      "id": "d5fa499d-2cec-4f7f-8587-f903dce07926",
+      "date": "2026-10-07",
+      "values": {
+        "pushups": 13,
+        "squat": 20,
+        "plank": 45,
+        "burpees": 10,
+        "crunch": 15
+      },
+      "source": "app"
+    }
+  ],
+  "exerciseStates": [
+    {
+      "exerciseId": "abWheel",
+      "variantIndex": 0,
+      "target": 5,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 34% del massimo di 15 → 5",
+        "from": {
+          "variantIndex": 0,
+          "target": 5,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 5,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (34% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 34% del massimo di 15 → 5",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "arnoldPress",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "ballCrunch",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "bandGoodMorning",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-06",
+        "kind": "repeat",
+        "reason": "Completato! Alla prossima sessione si sale",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-10-06",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "bandLateralRaise",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-28",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "bandRow",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-30",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "bandShoulderPress",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-05",
+        "kind": "repeat",
+        "reason": "Completato! Alla prossima sessione si sale",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-10-05",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "bicycleCrunch",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "dbCurl",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "dbShoulderPress",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-01",
+        "kind": "repeat",
+        "reason": "Stesso target: la volta scorsa non l’hai completato",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "kind": "repeat",
+          "reason": "Stesso target: la volta scorsa non l’hai completato",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "deadBug",
+      "variantIndex": 0,
+      "target": 6,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 6,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 6,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "diamondPushup",
+      "variantIndex": 0,
+      "target": 5,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 40% del massimo di 13 → 5",
+        "from": {
+          "variantIndex": 0,
+          "target": 4,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 5,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (40% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 4,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 4,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "kind": "repeat",
+          "reason": "Stesso target: la volta scorsa non l’hai completato",
+          "from": {
+            "variantIndex": 0,
+            "target": 4,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 4,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 40% del massimo di 13 → 5",
+          "from": {
+            "variantIndex": 0,
+            "target": 4,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "dip",
+      "variantIndex": 0,
+      "target": 9,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 73% del massimo di 13 → 9",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 9,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (73% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 73% del massimo di 13 → 9",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 9,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "donkeyKick",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "facePull",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "frontRaise",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-01",
+        "kind": "repeat",
+        "reason": "Stesso target: la volta scorsa non l’hai completato",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "kind": "repeat",
+          "reason": "Stesso target: la volta scorsa non l’hai completato",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "gluteBridge",
+      "variantIndex": 0,
+      "target": 15,
+      "loadId": "mini-light",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 75% del massimo di 20 → 15",
+        "from": {
+          "variantIndex": 0,
+          "target": 15,
+          "loadId": "mini-light"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 15,
+          "loadId": "mini-light"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (75% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          }
+        },
+        {
+          "date": "2026-10-06",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 75% del massimo di 20 → 15",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": "mini-light"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "hammerCurl",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "kickback",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "latPulldown",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-30",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "lateralRaise",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-05",
+        "kind": "repeat",
+        "reason": "Completato! Alla prossima sessione si sale",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          }
+        },
+        {
+          "date": "2026-10-05",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "legCurl",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (40% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "mountainClimbers",
+      "variantIndex": 0,
+      "target": 20,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 20,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 20,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 20,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 20,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "oneArmRow",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "overheadExt",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-05",
+        "kind": "repeat",
+        "reason": "Completato! Alla prossima sessione si sale",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        },
+        {
+          "date": "2026-10-05",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "pike",
+      "variantIndex": 0,
+      "target": 6,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 45% del massimo di 13 → 6",
+        "from": {
+          "variantIndex": 0,
+          "target": 5,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 6,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (45% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 45% del massimo di 13 → 6",
+          "from": {
+            "variantIndex": 0,
+            "target": 5,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "plank",
+      "variantIndex": 0,
+      "target": 30,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 67% del massimo di 45 s → 30 s",
+        "from": {
+          "variantIndex": 0,
+          "target": 30,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 30,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (67% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 30,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 30,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 67% del massimo di 45 s → 30 s",
+          "from": {
+            "variantIndex": 0,
+            "target": 30,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 30,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "plieSquat",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "pushup",
+      "variantIndex": 0,
+      "target": 7,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 55% del massimo di 13 → 7",
+        "from": {
+          "variantIndex": 0,
+          "target": 6,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 7,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (55% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "kind": "repeat",
+          "reason": "Stesso target: la volta scorsa non l’hai completato",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-05",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 55% del massimo di 13 → 7",
+          "from": {
+            "variantIndex": 0,
+            "target": 6,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 7,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "rdl",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "db-2",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "db-2"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "db-2"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "reverseCrunch",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "reverseFly",
+      "variantIndex": 0,
+      "target": 12,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-30",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 12,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 12,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "reverseLunge",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (40% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "russianTwist",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "sidePlank",
+      "variantIndex": 0,
+      "target": 15,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-30",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 15,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 15,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "singleLegBridge",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-29",
+        "kind": "repeat",
+        "reason": "Completato! La progressione scatta dalla prossima settimana",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "splitSquat",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (40% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 40% del massimo di 20 → 8",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "squat",
+      "variantIndex": 0,
+      "target": 15,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-07",
+        "kind": "test",
+        "reason": "Ricalcolato dal test: 75% del massimo di 20 → 15",
+        "from": {
+          "variantIndex": 0,
+          "target": 16,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 15,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza calcolato dal test (75% del massimo)",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-06",
+          "kind": "increase",
+          "reason": "+1 perché hai completato tutto la volta scorsa",
+          "from": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 16,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-06",
+          "kind": "repeat",
+          "reason": "Completato! La progressione scatta dalla prossima settimana",
+          "from": {
+            "variantIndex": 0,
+            "target": 16,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 16,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "test",
+          "reason": "Ricalcolato dal test: 75% del massimo di 20 → 15",
+          "from": {
+            "variantIndex": 0,
+            "target": 16,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 15,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "stepUp",
+      "variantIndex": 0,
+      "target": 8,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-10-06",
+        "kind": "repeat",
+        "reason": "Completato! Alla prossima sessione si sale",
+        "from": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 8,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        },
+        {
+          "date": "2026-10-06",
+          "kind": "repeat",
+          "reason": "Completato! Alla prossima sessione si sale",
+          "from": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 8,
+            "loadId": null
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "straightArmPulldown",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": "tube-yellow",
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": "tube-yellow"
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": "tube-yellow"
+          }
+        }
+      ]
+    },
+    {
+      "exerciseId": "superman",
+      "variantIndex": 0,
+      "target": 10,
+      "loadId": null,
+      "missStreak": 0,
+      "lastProgressWeek": 2,
+      "pendingProgress": false,
+      "lastChange": {
+        "date": "2026-09-27",
+        "kind": "start",
+        "reason": "Punto di partenza del programma",
+        "from": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        },
+        "to": {
+          "variantIndex": 0,
+          "target": 10,
+          "loadId": null
+        }
+      },
+      "history": [
+        {
+          "date": "2026-09-27",
+          "kind": "start",
+          "reason": "Punto di partenza del programma",
+          "from": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          },
+          "to": {
+            "variantIndex": 0,
+            "target": 10,
+            "loadId": null
+          }
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "21f5a6c8-610f-4919-89d9-3723ddeb8f96",
+      "date": "2026-09-28",
+      "dayType": "A",
+      "week": 1,
+      "deload": false,
+      "startedAt": "2026-09-28T07:00:00.000Z",
+      "endedAt": "2026-09-28T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "pushup",
+          "setIndex": 0,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 1,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 2,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 3,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pike",
+          "setIndex": 0,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pike",
+          "setIndex": 1,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pike",
+          "setIndex": 2,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "dip",
+          "setIndex": 0,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "dip",
+          "setIndex": 1,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "dip",
+          "setIndex": 2,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "bandLateralRaise",
+          "setIndex": 0,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandLateralRaise",
+          "setIndex": 1,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandLateralRaise",
+          "setIndex": 2,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        }
+      ],
+      "badForm": [],
+      "completed": true
+    },
+    {
+      "id": "83db5067-4b51-4241-9488-2c9597e595c5",
+      "date": "2026-09-29",
+      "dayType": "B",
+      "week": 1,
+      "deload": false,
+      "startedAt": "2026-09-29T07:00:00.000Z",
+      "endedAt": "2026-09-29T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "squat",
+          "setIndex": 0,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 1,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 2,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 3,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "reverseLunge",
+          "setIndex": 0,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "reverseLunge",
+          "setIndex": 1,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "reverseLunge",
+          "setIndex": 2,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "legCurl",
+          "setIndex": 0,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "legCurl",
+          "setIndex": 1,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "legCurl",
+          "setIndex": 2,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "singleLegBridge",
+          "setIndex": 0,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "singleLegBridge",
+          "setIndex": 1,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "singleLegBridge",
+          "setIndex": 2,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        }
+      ],
+      "badForm": [],
+      "completed": true
+    },
+    {
+      "id": "b1699efd-4c60-4f4e-8de9-960bc666cfce",
+      "date": "2026-09-30",
+      "dayType": "C",
+      "week": 1,
+      "deload": false,
+      "startedAt": "2026-09-30T07:00:00.000Z",
+      "endedAt": "2026-09-30T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "bandRow",
+          "setIndex": 0,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandRow",
+          "setIndex": 1,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandRow",
+          "setIndex": 2,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandRow",
+          "setIndex": 3,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "latPulldown",
+          "setIndex": 0,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "latPulldown",
+          "setIndex": 1,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "latPulldown",
+          "setIndex": 2,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "reverseFly",
+          "setIndex": 0,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "reverseFly",
+          "setIndex": 1,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "reverseFly",
+          "setIndex": 2,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "abWheel",
+          "setIndex": 0,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "abWheel",
+          "setIndex": 1,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "abWheel",
+          "setIndex": 2,
+          "target": 5,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "sidePlank",
+          "setIndex": 0,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "sidePlank",
+          "setIndex": 1,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "sidePlank",
+          "setIndex": 2,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": null
+        }
+      ],
+      "badForm": [],
+      "completed": true
+    },
+    {
+      "id": "48c1eb4b-2ad2-40f7-bcff-673ef262b1b9",
+      "date": "2026-10-01",
+      "dayType": "A",
+      "week": 1,
+      "deload": false,
+      "startedAt": "2026-10-01T07:00:00.000Z",
+      "endedAt": "2026-10-01T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "pushup",
+          "setIndex": 0,
+          "target": 6,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 1,
+          "target": 6,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 2,
+          "target": 6,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 3,
+          "target": 6,
+          "done": 5,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "dbShoulderPress",
+          "setIndex": 0,
+          "target": 8,
+          "done": 7,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "dbShoulderPress",
+          "setIndex": 1,
+          "target": 8,
+          "done": 7,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "dbShoulderPress",
+          "setIndex": 2,
+          "target": 8,
+          "done": 7,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "diamondPushup",
+          "setIndex": 0,
+          "target": 4,
+          "done": 3,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "diamondPushup",
+          "setIndex": 1,
+          "target": 4,
+          "done": 3,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "diamondPushup",
+          "setIndex": 2,
+          "target": 4,
+          "done": 3,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "frontRaise",
+          "setIndex": 0,
+          "target": 10,
+          "done": 9,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "frontRaise",
+          "setIndex": 1,
+          "target": 10,
+          "done": 9,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "frontRaise",
+          "setIndex": 2,
+          "target": 10,
+          "done": 9,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        }
+      ],
+      "badForm": [],
+      "completed": false
+    },
+    {
+      "id": "438f389c-119d-4310-8b66-700e7659aa24",
+      "date": "2026-10-05",
+      "dayType": "A",
+      "week": 2,
+      "deload": false,
+      "startedAt": "2026-10-05T07:00:00.000Z",
+      "endedAt": "2026-10-05T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "pushup",
+          "setIndex": 0,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 1,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 2,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "pushup",
+          "setIndex": 3,
+          "target": 6,
+          "done": 6,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "bandShoulderPress",
+          "setIndex": 0,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandShoulderPress",
+          "setIndex": 1,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandShoulderPress",
+          "setIndex": 2,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "overheadExt",
+          "setIndex": 0,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "overheadExt",
+          "setIndex": 1,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "overheadExt",
+          "setIndex": 2,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "lateralRaise",
+          "setIndex": 0,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "lateralRaise",
+          "setIndex": 1,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        },
+        {
+          "exerciseId": "lateralRaise",
+          "setIndex": 2,
+          "target": 12,
+          "done": 12,
+          "variantIndex": 0,
+          "loadId": "db-2"
+        }
+      ],
+      "badForm": [],
+      "completed": true
+    },
+    {
+      "id": "880d653d-97c1-4a77-8c4f-ce130d3d157e",
+      "date": "2026-10-06",
+      "dayType": "B",
+      "week": 2,
+      "deload": false,
+      "startedAt": "2026-10-06T07:00:00.000Z",
+      "endedAt": "2026-10-06T07:17:30.000Z",
+      "durationSec": 1050,
+      "sets": [
+        {
+          "exerciseId": "squat",
+          "setIndex": 0,
+          "target": 16,
+          "done": 16,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 1,
+          "target": 16,
+          "done": 16,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 2,
+          "target": 16,
+          "done": 16,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "squat",
+          "setIndex": 3,
+          "target": 16,
+          "done": 16,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "stepUp",
+          "setIndex": 0,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "stepUp",
+          "setIndex": 1,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "stepUp",
+          "setIndex": 2,
+          "target": 8,
+          "done": 8,
+          "variantIndex": 0,
+          "loadId": null
+        },
+        {
+          "exerciseId": "bandGoodMorning",
+          "setIndex": 0,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandGoodMorning",
+          "setIndex": 1,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "bandGoodMorning",
+          "setIndex": 2,
+          "target": 10,
+          "done": 10,
+          "variantIndex": 0,
+          "loadId": "tube-yellow"
+        },
+        {
+          "exerciseId": "gluteBridge",
+          "setIndex": 0,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": "mini-light"
+        },
+        {
+          "exerciseId": "gluteBridge",
+          "setIndex": 1,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": "mini-light"
+        },
+        {
+          "exerciseId": "gluteBridge",
+          "setIndex": 2,
+          "target": 15,
+          "done": 15,
+          "variantIndex": 0,
+          "loadId": "mini-light"
+        }
+      ],
+      "badForm": [],
+      "completed": true
+    }
+  ],
+  "activeRest": [
+    "2026-10-04"
+  ]
+}

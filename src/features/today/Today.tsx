@@ -11,6 +11,8 @@ import { DAY_TYPE_LABEL, programDay } from '../../domain/schedule';
 import type { PlannedExercise } from '../../domain/session';
 import type { ISODate, SessionLog } from '../../domain/types';
 import { minutes, mmss, targetLabel } from '../../lib/format';
+import { markExported, shouldRemindBackup } from '../../lib/backupReminder';
+import { shareOrDownload } from '../../lib/files';
 import { repo } from '../../storage';
 
 export function Today({
@@ -27,6 +29,16 @@ export function Today({
   const [info, setInfo] = useState<InfoItem | null>(null);
   const view = dayView(data, date, today);
   const { day } = view;
+  const [backupDismissed, setBackupDismissed] = useState(false);
+  const showBackup = date === today && !backupDismissed && shouldRemindBackup(data.sessions.length);
+  const exportBackup = async () => {
+    const backup = await repo.exportAll();
+    const r = await shareOrDownload(`trainer-backup-${today}.json`, JSON.stringify(backup, null, 2), 'application/json');
+    if (r !== 'cancelled') {
+      markExported();
+      setBackupDismissed(true);
+    }
+  };
 
   // swipe orizzontale per cambiare giorno
   const touch = useRef<{ x: number; y: number } | null>(null);
@@ -64,6 +76,23 @@ export function Today({
         <button type="button" onClick={() => setDate(today)} className="-mt-2 self-center rounded-full bg-accent/15 px-4 py-1.5 text-accent">
           ↩ Torna a oggi
         </button>
+      )}
+
+      {showBackup && (
+        <Card className="border-rest/40">
+          <p className="font-semibold text-rest">💾 Fai un backup</p>
+          <p className="mt-1 text-sm text-slate-300">
+            I tuoi dati sono solo su questo telefono. Salvane una copia su File o iCloud: se cambi telefono o rimuovi l’app, la ritrovi.
+          </p>
+          <div className="mt-3 flex gap-2">
+            <Button variant="primary" className="flex-1" onClick={exportBackup}>
+              Esporta ora
+            </Button>
+            <Button variant="ghost" onClick={() => (markExported(), setBackupDismissed(true))}>
+              Più tardi
+            </Button>
+          </div>
+        </Card>
       )}
 
       {data.tests.length === 0 && (

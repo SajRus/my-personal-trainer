@@ -10,7 +10,9 @@ App personale per allenarsi in camera: **15-20 minuti al giorno, 6 giorni su 7**
 - **Progressione automatica** (con il motivo di ogni modifica): +1 a settimana se completi tutto, stesso target se lo manchi, −10% dopo 2 volte di fila, elastico successivo quando arrivi al limite, ricalcolo dopo i test, scarico nella settimana 8.
 - **Test guidati**: i 5 test in sequenza con 3 minuti di recupero, poi ricalcolo dei target.
 - **Progressi**: serie di giorni consecutivi, calendario, muscoli allenati nella settimana, grafici dei test, volume settimanale, peso corporeo, storico di carichi ed elastici.
-- **Impostazioni**: attrezzatura ed elastici (nome, colore, durezza), voce e suoni, durata dei recuperi, promemoria nel Calendario (.ics), guida per Comandi Rapidi, backup JSON, ricomincia il programma.
+- **Musica**: colonna sonora generata dall'app (Energia o Chill, offline e senza diritti) che segue l'allenamento: piena nelle serie, ovattata nei recuperi, più bassa quando parla la guida. In alternativa si usa la propria musica (Spotify, Apple Music…) senza che l'app la interrompa.
+- **Attrezzi**: elastici, fasce, mini band, manubri, kettlebell, sbarra per trazioni, TRX, palla, ab wheel, cyclette, sedia, corda, rullo. Ogni attrezzo aggiunto porta nuovi esercizi nella rotazione.
+- **Impostazioni**: profilo, attrezzatura (nome, colore, durezza o peso), musica, voce e suoni, durata dei recuperi, promemoria nel Calendario (.ics), guida per Comandi Rapidi, backup JSON, copie di sicurezza automatiche, ricomincia il programma.
 
 ## Sviluppo locale
 
@@ -99,6 +101,12 @@ Ogni persona usa l'app **sul proprio telefono** e ha i propri dati: nessuno vede
 4. **Data di inizio**.
 
 Chi cambia telefono può usare **"Ho già un backup: ripristina"** nella prima schermata.
+
+**I dati non si perdono con gli aggiornamenti**
+- Gli aggiornamenti dell'app non toccano i dati: il database si aggiorna solo aggiungendo, mai togliendo.
+- L'app salva da sola una **copia di sicurezza** dopo ogni aggiornamento, una volta a settimana e prima di importare, cancellare o ricominciare. Le ultime 5 si ripristinano da Impostazioni → Copie di sicurezza.
+- Ogni tanto la schermata Oggi ricorda di **esportare un backup** su File o iCloud: è l'unica protezione se si rimuove l'app dal telefono.
+- Per chi sviluppa, le regole sono in `CLAUDE.md` e i test in `tests/compat.test.ts`.
 
 **Note su iOS**
 - Beep e voce partono dopo il tocco su "Inizia" (è una regola di iOS). Se non senti i beep, controlla l'interruttore silenzioso.

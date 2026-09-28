@@ -1,6 +1,12 @@
 // Guida vocale in italiano con la Web Speech API.
 
 let voice: SpeechSynthesisVoice | null = null;
+let speakingListener: ((speaking: boolean) => void) | null = null;
+
+/** Per sapere quando la guida parla (serve ad abbassare la musica). */
+export function setSpeakingListener(fn: (speaking: boolean) => void) {
+  speakingListener = fn;
+}
 
 function pickVoice() {
   const voices = window.speechSynthesis?.getVoices() ?? [];
@@ -20,6 +26,8 @@ export function speak(text: string) {
   u.lang = 'it-IT';
   if (voice) u.voice = voice;
   u.rate = 1.05;
+  u.onstart = () => speakingListener?.(true);
+  u.onend = u.onerror = () => speakingListener?.(false);
   synth.speak(u);
 }
 
@@ -33,4 +41,5 @@ export function unlockSpeech() {
 
 export function stopSpeech() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  speakingListener?.(false);
 }

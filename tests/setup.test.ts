@@ -67,3 +67,12 @@ describe('sesso', () => {
     expect(f.states.pushup.target).toBeLessThan(m.states.pushup.target);
   });
 });
+
+describe('kettlebell', () => {
+  it('si creano coi pesi scelti e il goblet squat parte dal più vicino a 8 kg', () => {
+    const eq = buildEquipment(['kettlebell'], [], [16, 6, 12]);
+    expect(eq.map((e) => e.name)).toEqual(['Kettlebell 6 kg', 'Kettlebell 12 kg', 'Kettlebell 16 kg']);
+    const ctx = { date: '2026-09-28', absWeek: 1, equipment: eq };
+    expect(initialState(EXERCISES.gobletSquat, BASELINE_TESTS, ctx).loadId).toBe('kb-6');
+  });
+});

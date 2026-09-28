@@ -6,6 +6,7 @@ import {
   buildEquipment,
   COOLDOWN_POOLS,
   DUMBBELL_CHOICES,
+  KETTLEBELL_CHOICES,
   EQUIPMENT_KIND_LABEL,
   EXERCISES,
   SEX_LABEL,
@@ -19,7 +20,22 @@ import { repo } from '../../storage';
 
 type Step = 'welcome' | 'profile' | 'equipment' | 'level' | 'start';
 
-const KINDS: EquipmentKind[] = ['mat', 'tube-band', 'mini-band', 'flat-band', 'dumbbell', 'ball', 'ab-wheel', 'chair', 'bike'];
+const KINDS: EquipmentKind[] = [
+  'mat',
+  'tube-band',
+  'mini-band',
+  'flat-band',
+  'dumbbell',
+  'kettlebell',
+  'pullup-bar',
+  'suspension',
+  'ball',
+  'ab-wheel',
+  'chair',
+  'bike',
+  'jump-rope',
+  'foam-roller',
+];
 
 /** Per ogni tipo di attrezzo, gli esercizi del programma che lo usano (per spiegare a cosa serve). */
 function usedFor(kind: EquipmentKind): string[] {
@@ -108,6 +124,7 @@ export function Onboarding({
   const [weightKg, setWeight] = useState(lastWeight ?? NaN);
   const [kinds, setKinds] = useState<EquipmentKind[]>(['mat']);
   const [dumbbellKg, setDumbbellKg] = useState<number[]>([]);
+  const [kettlebellKg, setKettlebellKg] = useState<number[]>([]);
   const [mode, setMode] = useState<'guided' | 'known'>(restart ? 'known' : 'guided');
   const [tests, setTests] = useState<TestValues>(
     lastTest ? { ...lastTest } : ({ pushups: NaN, squat: NaN, plank: NaN, burpees: NaN, crunch: NaN } as TestValues),
@@ -124,6 +141,7 @@ export function Onboarding({
     const guided = mode === 'guided';
     // prima di qualsiasi await: su iOS audio e voce si sbloccano solo dentro il tocco
     if (guided) onStartTests?.();
+    if (restart) await repo.saveSnapshot('Prima di ricominciare il programma');
     await setupProgram(repo, {
       today,
       programStart,
@@ -132,7 +150,7 @@ export function Onboarding({
       sex: sex ?? 'X',
       tests: guided ? (lastTest ?? BASELINE_BY_SEX[sex ?? 'X']) : tests,
       provisional: guided, // i valori veri arrivano dai test guidati
-      equipment: restart ? undefined : buildEquipment(kinds, kinds.includes('dumbbell') ? dumbbellKg : []),
+      equipment: restart ? undefined : buildEquipment(kinds, dumbbellKg, kettlebellKg),
     });
     onDone?.();
   };
@@ -201,26 +219,8 @@ export function Onboarding({
                   {on && ['tube-band', 'mini-band', 'flat-band'].includes(k) && (
                     <p className="mt-1 text-sm text-slate-400">Creo {k === 'flat-band' ? '2' : '3'} livelli (leggero → duro): li adatti dopo ai tuoi.</p>
                   )}
-                  {on && k === 'dumbbell' && (
-                    <div className="mt-2">
-                      <p className="mb-2 text-sm text-slate-400">Che pesi hai? (kg, anche più di uno)</p>
-                      <div className="flex flex-wrap gap-2">
-                        {DUMBBELL_CHOICES.map((kg) => {
-                          const sel = dumbbellKg.includes(kg);
-                          return (
-                            <button
-                              key={kg}
-                              type="button"
-                              onClick={() => setDumbbellKg((p) => (sel ? p.filter((x) => x !== kg) : [...p, kg]))}
-                              className={`h-11 min-w-[3rem] rounded-full border px-3 text-lg ${sel ? 'border-accent bg-accent/15' : 'border-line'}`}
-                            >
-                              {kg}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                  {on && k === 'dumbbell' && <WeightPicker choices={DUMBBELL_CHOICES} value={dumbbellKg} onChange={setDumbbellKg} />}
+                  {on && k === 'kettlebell' && <WeightPicker choices={KETTLEBELL_CHOICES} value={kettlebellKg} onChange={setKettlebellKg} />}
                 </div>
               );
             })}
@@ -228,7 +228,7 @@ export function Onboarding({
           {kinds.length < 3 && (
             <p className="text-sm text-warn">Il programma usa diversi attrezzi: senza, alcuni esercizi andranno adattati (li vedrai segnalati).</p>
           )}
-          {nav(!(kinds.includes('dumbbell') && dumbbellKg.length === 0))}
+          {nav(!(kinds.includes('dumbbell') && dumbbellKg.length === 0) && !(kinds.includes('kettlebell') && kettlebellKg.length === 0))}
         </>
       )}
 
@@ -289,6 +289,29 @@ export function Onboarding({
         </>
       )}
     </main>
+  );
+}
+
+function WeightPicker({ choices, value, onChange }: { choices: number[]; value: number[]; onChange: (v: number[]) => void }) {
+  return (
+    <div className="mt-2">
+      <p className="mb-2 text-sm text-slate-400">Che pesi hai? (kg, anche più di uno)</p>
+      <div className="flex flex-wrap gap-2">
+        {choices.map((kg) => {
+          const sel = value.includes(kg);
+          return (
+            <button
+              key={kg}
+              type="button"
+              onClick={() => onChange(sel ? value.filter((x) => x !== kg) : [...value, kg])}
+              className={`h-11 min-w-[3rem] rounded-full border px-3 text-lg ${sel ? 'border-accent bg-accent/15' : 'border-line'}`}
+            >
+              {kg}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

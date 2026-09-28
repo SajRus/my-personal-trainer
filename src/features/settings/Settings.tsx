@@ -1,19 +1,41 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { saveProfileFields, saveSettings, type AppData } from '../../app/trainer';
 import { Button, Card, NumberRow, Sheet, Toggle } from '../../components/ui';
 import { MEDIA } from '../../data/media';
-import { EQUIPMENT_KIND_LABEL, EQUIPMENT_PRESETS, EXERCISES, SEX_LABEL } from '../../data/program';
+import { EQUIPMENT_KIND_LABEL, EQUIPMENT_PRESETS, EXERCISES, SEX_LABEL, WEIGHT_KINDS } from '../../data/program';
 import { todayISO } from '../../domain/dates';
-import type { BackupData, Equipment, EquipmentKind, Sex } from '../../domain/types';
+import type { BackupData, Equipment, EquipmentKind, MusicSetting, Sex } from '../../domain/types';
+import { unlockAudio } from '../../lib/audio';
+import { music } from '../../lib/music';
+import { prepareAudioSession } from '../../lib/useWorkoutMusic';
+import { markExported } from '../../lib/backupReminder';
 import { readFileAsText, shareOrDownload } from '../../lib/files';
+import { migrateBackup } from '../../storage/migrate';
+import type { SnapshotMeta } from '../../storage/repository';
 import { buildReminderIcs } from '../../lib/ics';
 import { newId } from '../../lib/id';
 import { repo } from '../../storage';
 
 const SWATCHES = ['#eab308', '#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#f97316', '#ec4899', '#6b7280', '#111827', '#a3e635'];
-const KIND_ORDER: EquipmentKind[] = ['tube-band', 'flat-band', 'mini-band', 'dumbbell', 'ball', 'mat', 'ab-wheel', 'bike', 'chair'];
+const KIND_ORDER: EquipmentKind[] = [
+  'tube-band',
+  'flat-band',
+  'mini-band',
+  'dumbbell',
+  'kettlebell',
+  'pullup-bar',
+  'suspension',
+  'ball',
+  'mat',
+  'ab-wheel',
+  'bike',
+  'chair',
+  'jump-rope',
+  'foam-roller',
+];
 /** Tipi con livelli di durezza/carico: sono quelli che la progressione scala. */
-const LEVELED: EquipmentKind[] = ['tube-band', 'flat-band', 'mini-band', 'dumbbell'];
+const LEVELED: EquipmentKind[] = ['tube-band', 'flat-band', 'mini-band', 'dumbbell', 'kettlebell'];
+const isWeight = (k: EquipmentKind) => WEIGHT_KINDS.includes(k);
 
 export function Settings({ data, onStartTest, onRestart }: { data: AppData; onStartTest: () => void; onRestart: () => void }) {
   const s = data.profile.settings;
@@ -54,6 +76,8 @@ export function Settings({ data, onStartTest, onRestart }: { data: AppData; onSt
         <p className="text-sm text-slate-400">Lungo: primo esercizio di ogni giorno (tabella: 60 s). Breve: gli altri (tabella: 45 s).</p>
       </Section>
 
+      <MusicSection data={data} />
+
       <ReminderSection data={data} />
 
       <Section title="Test e programma">
@@ -64,6 +88,8 @@ export function Settings({ data, onStartTest, onRestart }: { data: AppData; onSt
       </Section>
 
       <DataSection />
+
+      <SnapshotSection />
 
       <CreditsSection />
     </div>
@@ -97,9 +123,9 @@ function EquipmentSection({ data }: { data: AppData }) {
       id: `${kind}-${newId().slice(0, 8)}`,
       kind,
       name: '',
-      color: LEVELED.includes(kind) && kind !== 'dumbbell' ? SWATCHES[same.length % SWATCHES.length] : undefined,
-      level: same.length ? Math.max(...same.map((e) => e.level)) + 1 : 1,
-      quantity: kind === 'dumbbell' ? 2 : undefined,
+      color: LEVELED.includes(kind) && !isWeight(kind) ? SWATCHES[same.length % SWATCHES.length] : undefined,
+      level: same.length ? Math.max(...same.map((e) => e.level)) + (isWeight(kind) ? 2 : 1) : isWeight(kind) ? 8 : 1,
+      quantity: kind === 'dumbbell' ? 2 : kind === 'kettlebell' ? 1 : undefined,
     });
   };
 
@@ -149,7 +175,7 @@ function EquipmentSection({ data }: { data: AppData }) {
                   >
                     {e.color ? <span className="h-5 w-5 rounded-full border border-white/20" style={{ background: e.color }} /> : <span className="w-5" />}
                     <span className="flex-1 text-lg">{e.name}</span>
-                    {leveled && e.kind !== 'dumbbell' && <span className="text-sm text-slate-400">livello {e.level}</span>}
+                    {leveled && !isWeight(e.kind) && <span className="text-sm text-slate-400">livello {e.level}</span>}
                     <span className="text-slate-500">›</span>
                   </button>
                 </li>
@@ -197,7 +223,7 @@ function EquipmentEditor({
   const [e, setE] = useState(item);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const leveled = LEVELED.includes(e.kind);
-  const hasColor = e.kind !== 'dumbbell' && leveled;
+  const hasColor = !isWeight(e.kind) && leveled;
 
   return (
     <div className="flex flex-col gap-4">
@@ -208,7 +234,7 @@ function EquipmentEditor({
         <span className="text-slate-400">Nome</span>
         <input
           value={e.name}
-          placeholder={e.kind === 'dumbbell' ? 'es. Manubri 3 kg' : 'es. Verde – medio'}
+          placeholder={e.kind === 'dumbbell' ? 'es. Manubri 3 kg' : e.kind === 'kettlebell' ? 'es. Kettlebell 12 kg' : 'es. Verde – medio'}
           onChange={(ev) => setE({ ...e, name: ev.target.value })}
           className="rounded-xl border border-line bg-card px-3 py-3 text-lg"
         />
@@ -232,9 +258,9 @@ function EquipmentEditor({
       )}
       {leveled && (
         <NumberRow
-          label={e.kind === 'dumbbell' ? 'Peso (kg)' : 'Livello di durezza'}
+          label={isWeight(e.kind) ? 'Peso (kg)' : 'Livello di durezza'}
           value={e.level}
-          step={e.kind === 'dumbbell' ? 0.5 : 1}
+          step={isWeight(e.kind) ? 0.5 : 1}
           min={0}
           onChange={(v) => setE({ ...e, level: v })}
         />
@@ -259,6 +285,92 @@ function EquipmentEditor({
           </Button>
         ))}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------- musica
+
+const MUSIC_OPTIONS: { id: MusicSetting; label: string; text: string }[] = [
+  { id: 'energia', label: '⚡ Energia', text: '124 BPM, ritmo house: carica durante le serie.' },
+  { id: 'chill', label: '🌙 Chill', text: '88 BPM, lo-fi morbido: per chi preferisce un sottofondo.' },
+  { id: 'mine', label: '🎧 La mia musica', text: 'Spotify, Apple Music…: avviala prima, l’app non la ferma.' },
+  { id: 'off', label: '🔇 Nessuna', text: 'Solo beep e voce.' },
+];
+
+function MusicSection({ data }: { data: AppData }) {
+  const s = data.profile.settings;
+  const current = s.music ?? 'energia';
+  const volume = s.musicVolume ?? 50;
+  const [previewing, setPreviewing] = useState(false);
+
+  useEffect(() => () => music.stop(0.3), []);
+
+  const preview = () => {
+    if (previewing) {
+      music.stop(0.4);
+      setPreviewing(false);
+      return;
+    }
+    prepareAudioSession(s);
+    unlockAudio(); // dentro il tocco: su iPhone è obbligatorio
+    music.setMode('work');
+    music.start(current === 'chill' ? 'chill' : 'energia', volume / 100);
+    setPreviewing(true);
+  };
+
+  const choose = async (id: MusicSetting) => {
+    await saveSettings(repo, data, { music: id });
+    if (previewing) {
+      music.stop(0.2);
+      setPreviewing(false);
+    }
+  };
+
+  return (
+    <Section title="Musica durante l’allenamento">
+      <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Musica">
+        {MUSIC_OPTIONS.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            role="radio"
+            aria-checked={current === o.id}
+            onClick={() => choose(o.id)}
+            className={`rounded-xl border-2 p-3 text-left ${current === o.id ? 'border-accent bg-accent/15' : 'border-line'}`}
+          >
+            <span className="block text-base font-semibold">{o.label}</span>
+            <span className="block text-xs text-slate-400">{o.text}</span>
+          </button>
+        ))}
+      </div>
+      {(current === 'energia' || current === 'chill') && (
+        <>
+          <NumberRow
+            label="Volume"
+            value={volume}
+            step={10}
+            min={10}
+            unit="%"
+            onChange={(v) => {
+              const vol = Math.min(100, v);
+              void saveSettings(repo, data, { musicVolume: vol });
+              music.setVolume(vol / 100);
+            }}
+          />
+          <Button onClick={preview}>{previewing ? '■ Ferma' : '▶ Ascolta'}</Button>
+          <p className="text-sm text-slate-400">
+            La colonna sonora è creata dall’app (funziona anche offline): segue l’allenamento, ovattata nei recuperi, e si abbassa quando
+            parla la guida. Durante l’allenamento puoi zittirla col tasto 🎵.
+          </p>
+        </>
+      )}
+      {current === 'mine' && (
+        <p className="text-sm text-slate-400">
+          Avvia la tua musica in un’altra app, poi apri il Trainer e tocca Inizia: beep e voce si sovrappongono senza fermarla. Su iPhone la
+          voce può abbassarla per un attimo.
+        </p>
+      )}
+    </Section>
   );
 }
 
@@ -339,15 +451,17 @@ function DataSection() {
   const exportData = async () => {
     const backup = await repo.exportAll();
     const r = await shareOrDownload(`trainer-backup-${todayISO()}.json`, JSON.stringify(backup, null, 2), 'application/json');
-    if (r !== 'cancelled') setMsg({ ok: true, text: 'Backup creato. Conservalo su File o iCloud Drive.' });
+    if (r !== 'cancelled') {
+      markExported();
+      setMsg({ ok: true, text: 'Backup creato. Conservalo su File o iCloud Drive.' });
+    }
   };
 
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
     try {
-      const parsed = JSON.parse(await readFileAsText(file)) as BackupData;
-      if (parsed.app !== 'myPersonalTrainer') throw new Error('non è un backup di questa app');
-      setPendingImport(parsed);
+      // accetta anche backup di versioni precedenti dell'app
+      setPendingImport(migrateBackup(JSON.parse(await readFileAsText(file))));
     } catch (e) {
       setMsg({ ok: false, text: `File non valido: ${(e as Error).message}` });
     } finally {
@@ -378,7 +492,7 @@ function DataSection() {
         <div className="rounded-xl border border-warn/50 p-3">
           <p className="mb-2">
             Importare il backup del {pendingImport.exportedAt.slice(0, 10)}? ({pendingImport.sessions.length} allenamenti,{' '}
-            {pendingImport.tests.length} test). I dati attuali verranno sostituiti.
+            {pendingImport.tests.length} test). I dati attuali verranno sostituiti, ma prima ne salvo una copia di sicurezza.
           </p>
           <div className="flex gap-2">
             <Button variant="primary" className="flex-1" onClick={doImport}>
@@ -393,7 +507,7 @@ function DataSection() {
 
       {confirmWipe ? (
         <div className="rounded-xl border border-red-600/50 p-3">
-          <p className="mb-2">Cancellare tutti i dati? Allenamenti, test, peso e attrezzatura verranno eliminati. Non si può annullare.</p>
+          <p className="mb-2">Cancellare tutti i dati? Allenamenti, test, peso e attrezzatura verranno eliminati. Resta una copia di sicurezza che puoi ripristinare qui sotto.</p>
           <div className="flex gap-2">
             <Button variant="danger" className="flex-1" onClick={() => repo.clearAll()}>
               Cancella tutto
@@ -408,6 +522,69 @@ function DataSection() {
           Cancella tutti i dati
         </Button>
       )}
+    </Section>
+  );
+}
+
+// ---------------------------------------------------------------- copie di sicurezza
+
+function SnapshotSection() {
+  const [list, setList] = useState<SnapshotMeta[]>([]);
+  const [confirm, setConfirm] = useState<SnapshotMeta | null>(null);
+  const [msg, setMsg] = useState('');
+  const refresh = () => repo.listSnapshots().then(setList).catch(() => setList([]));
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+  const restore = async (s: SnapshotMeta) => {
+    const data = await repo.getSnapshot(s.id);
+    if (!data) return;
+    await repo.importAll(data); // salva prima una copia dello stato attuale
+    setConfirm(null);
+    setMsg('Copia ripristinata.');
+    void refresh();
+  };
+
+  const fmt = (iso: string) => new Date(iso).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+  return (
+    <Section title="Copie di sicurezza automatiche">
+      <p className="text-sm text-slate-400">
+        L’app salva da sola una copia dei tuoi dati dopo ogni aggiornamento, una volta a settimana e prima di importare, cancellare o
+        ricominciare. Restano sul telefono (le ultime 5): se la rimuovi dalla schermata Home, conta solo il backup esportato.
+      </p>
+      {list.length === 0 && <p className="text-sm text-slate-500">Ancora nessuna copia.</p>}
+      <ul className="flex flex-col divide-y divide-line">
+        {list.map((s) => (
+          <li key={s.id} className="flex items-center justify-between gap-2 py-2">
+            <span>
+              <span className="block">{s.reason}</span>
+              <span className="text-sm text-slate-400">
+                {fmt(s.createdAt)} · {s.sessions} allenamenti
+              </span>
+            </span>
+            <button type="button" className="shrink-0 rounded-full bg-line px-3 py-1.5 text-sm" onClick={() => setConfirm(s)}>
+              Ripristina
+            </button>
+          </li>
+        ))}
+      </ul>
+      {msg && <p className="text-sm text-accent">{msg}</p>}
+      <Sheet open={!!confirm} onClose={() => setConfirm(null)}>
+        {confirm && (
+          <div className="flex flex-col gap-3">
+            <h2 className="text-2xl font-bold">Ripristinare questa copia?</h2>
+            <p className="text-slate-300">
+              «{confirm.reason}» del {fmt(confirm.createdAt)}, con {confirm.sessions} allenamenti. I dati attuali vengono sostituiti, ma
+              prima ne salvo una copia: puoi sempre tornare indietro.
+            </p>
+            <Button variant="primary" onClick={() => restore(confirm)}>
+              Ripristina
+            </Button>
+          </div>
+        )}
+      </Sheet>
     </Section>
   );
 }

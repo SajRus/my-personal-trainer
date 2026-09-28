@@ -5,6 +5,8 @@ import { canDoExercise, chooseDay, occurrence } from '../src/domain/rotation';
 import { EXAMPLE_EQUIPMENT } from './fixtures';
 
 const START = '2026-09-28'; // lunedì: A lun/gio, B mar/ven, C mer/sab
+/** Attrezzatura d'esempio + tutti gli attrezzi aggiunti dopo. */
+const FULL = [...EXAMPLE_EQUIPMENT, ...buildEquipment(['pullup-bar', 'suspension', 'jump-rope', 'foam-roller', 'kettlebell'], [], [8, 12])];
 
 describe('rotazione automatica', () => {
   it('conta le volte che è capitato lo stesso tipo di giorno', () => {
@@ -31,8 +33,8 @@ describe('rotazione automatica', () => {
 
   it('in poche settimane usa tutte le alternative', () => {
     const seen = new Set<string>();
-    for (let w = 0; w < 8; w++) {
-      for (const off of [0, 3]) chooseDay('C', addDays(START, w * 7 + 2 + off), START, EXAMPLE_EQUIPMENT).blocks.flat().forEach((id) => seen.add(id));
+    for (let w = 0; w < 12; w++) {
+      for (const off of [0, 3]) chooseDay('C', addDays(START, w * 7 + 2 + off), START, FULL).blocks.flat().forEach((id) => seen.add(id));
     }
     const all = DAYS.C.blocks.flatMap((b) => [...b.exercises, ...(b.alternatives ?? []).flat()]);
     expect([...seen].sort()).toEqual([...new Set(all)].sort());
@@ -67,5 +69,29 @@ describe('rotazione automatica', () => {
   it('anche riscaldamento e defaticamento cambiano da un giorno all’altro', () => {
     const w = [0, 1, 2].map((i) => chooseDay('A', addDays(START, i), START, EXAMPLE_EQUIPMENT).warmup[1].id);
     expect(new Set(w).size).toBeGreaterThan(1);
+  });
+
+  it('senza elastici il rematore principale usa una riserva, sempre la stessa', () => {
+    const noBands = buildEquipment(['mat', 'suspension', 'dumbbell'], [4]);
+    const mains = new Set<string>();
+    for (let w = 0; w < 6; w++) mains.add(chooseDay('C', addDays(START, w * 7 + 2), START, noBands).blocks[0][0]);
+    expect([...mains]).toEqual(['trxRow']);
+  });
+
+  it('con gli elastici il rematore principale resta quello della tabella', () => {
+    expect(chooseDay('C', addDays(START, 2), START, FULL).blocks[0]).toEqual(['bandRow']);
+  });
+
+  it('gli attrezzi nuovi entrano da soli nella rotazione', () => {
+    const seen = new Set<string>();
+    for (let i = 0; i < 40; i++) {
+      const c = chooseDay('C', addDays(START, 2 + Math.floor(i / 2) * 7 + (i % 2) * 3), START, FULL);
+      c.blocks.flat().forEach((x) => seen.add(x));
+      c.warmup.forEach((x) => seen.add(x.id));
+      c.cooldown.forEach((x) => seen.add(x.id));
+    }
+    for (const id of ['pullUp', 'chinUp', 'trxRow', 'kbRow', 'hangingKneeRaise', 'trxKneeTuck', 'warmup-rope', 'roll-quads']) {
+      expect(seen.has(id), id).toBe(true);
+    }
   });
 });

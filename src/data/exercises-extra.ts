@@ -377,6 +377,128 @@ export const EXTRA_EXERCISES: Record<string, ExerciseDef> = {
     illustration: 'superman',
     variants: [reps('superman', 'Superman', 10, 15)],
   },
+
+  // ---------------------------------------------------------------- sbarra per trazioni
+  pullUp: {
+    id: 'pullUp',
+    name: 'Trazioni alla sbarra',
+    metric: 'reps',
+    muscles: ['schiena'],
+    secondary: ['bicipiti', 'spalle'],
+    equipment: ['pullup-bar'],
+    description: 'Appeso alla sbarra, mani poco più larghe delle spalle coi palmi in avanti. Tira finché il mento supera la sbarra e scendi controllato.',
+    tips: ['Parti da braccia distese', 'Spalle basse, lontane dalle orecchie', 'Se non riesci ancora, sali con un salto e scendi lentamente'],
+    illustration: 'pullUp',
+    variants: [
+      reps('pullup-neg', 'Trazioni negative (salita col salto, discesa in 4 s)', 3, 6),
+      { id: 'pullup', name: 'Trazioni alla sbarra', start: 3, max: 10, step: 1, maxHint: 'Ottimo! Mantieni e prova le trazioni a presa inversa' },
+    ],
+  },
+  chinUp: {
+    id: 'chinUp',
+    name: 'Trazioni a presa inversa',
+    metric: 'reps',
+    muscles: ['schiena', 'bicipiti'],
+    secondary: ['spalle'],
+    equipment: ['pullup-bar'],
+    description: 'Come le trazioni, ma coi palmi verso di te e le mani alla larghezza delle spalle: lavorano di più i bicipiti.',
+    tips: ['Petto verso la sbarra', 'Niente slancio con le gambe', 'Scendi fino a braccia distese'],
+    illustration: 'chinUp',
+    variants: [
+      reps('chinup-neg', 'Trazioni inverse negative (discesa in 4 s)', 3, 6),
+      { id: 'chinup', name: 'Trazioni a presa inversa', start: 3, max: 10, step: 1 },
+    ],
+  },
+  hangingKneeRaise: {
+    id: 'hangingKneeRaise',
+    name: 'Ginocchia al petto alla sbarra',
+    metric: 'reps',
+    muscles: ['core'],
+    secondary: ['schiena'],
+    equipment: ['pullup-bar'],
+    description: 'Appeso alla sbarra, porta le ginocchia verso il petto arrotondando il bacino, poi scendi senza dondolare.',
+    tips: ['Niente oscillazioni', 'Arrotonda il bacino in alto', 'Scendi in 2 secondi'],
+    illustration: 'hangingKneeRaise',
+    variants: [reps('hangknee', 'Ginocchia al petto alla sbarra', 6, 15)],
+  },
+
+  // ---------------------------------------------------------------- kettlebell
+  gobletSquat: {
+    id: 'gobletSquat',
+    name: 'Goblet squat',
+    metric: 'reps',
+    muscles: ['quadricipiti', 'glutei'],
+    secondary: ['core'],
+    equipment: ['kettlebell'],
+    description: 'Tieni il kettlebell per le maniglie davanti al petto. Scendi in squat coi gomiti tra le ginocchia e risali.',
+    tips: ['Petto alto, kettlebell vicino al corpo', 'Talloni a terra', 'Gomiti che sfiorano l’interno delle ginocchia'],
+    illustration: 'gobletSquat',
+    variants: [reps('goblet', 'Goblet squat', 10, 15, { loadKind: 'kettlebell', startLoad: { closestTo: 8 } })],
+  },
+  kbSwing: {
+    id: 'kbSwing',
+    name: 'Swing con kettlebell',
+    metric: 'reps',
+    muscles: ['glutei', 'femorali'],
+    secondary: ['core', 'schiena', 'spalle'],
+    equipment: ['kettlebell'],
+    description: 'Kettlebell a due mani tra le gambe: spingi il bacino in avanti con forza e lascialo salire fino al petto, poi accompagnalo giù.',
+    tips: ['La spinta viene dai glutei, non dalle braccia', 'Schiena dritta nella discesa', 'Spazio libero intorno!'],
+    illustration: 'kbSwing',
+    variants: [reps('swing', 'Swing con kettlebell', 12, 20, { loadKind: 'kettlebell', startLoad: { closestTo: 8 } })],
+  },
+  kbRow: {
+    id: 'kbRow',
+    name: 'Rematore con kettlebell',
+    metric: 'reps',
+    perSide: true,
+    muscles: ['schiena'],
+    secondary: ['bicipiti', 'spalle'],
+    equipment: ['kettlebell'],
+    description: 'Busto inclinato in avanti a schiena dritta, kettlebell in mano. Tira verso il fianco e scendi controllato.',
+    tips: ['Schiena piatta', 'Tira col gomito', 'Non ruotare il busto'],
+    illustration: 'kbRow',
+    variants: [reps('kbrow', 'Rematore con kettlebell', 10, 15, { loadKind: 'kettlebell', startLoad: 'heaviest' })],
+  },
+
+  // ---------------------------------------------------------------- TRX / sospensione
+  trxRow: {
+    id: 'trxRow',
+    name: 'Rematore al TRX',
+    metric: 'reps',
+    muscles: ['schiena'],
+    secondary: ['bicipiti', 'spalle', 'core'],
+    equipment: ['suspension'],
+    description: 'Maniglie in mano, corpo inclinato indietro e dritto. Tira il petto verso le mani e torna giù lentamente.',
+    tips: ['Corpo rigido come in un plank', 'Più i piedi sono avanti, più è duro', 'Stringi le scapole in alto'],
+    illustration: 'trxRow',
+    variants: [reps('trxrow', 'Rematore al TRX', 8, 15, { maxHint: 'Porta i piedi più avanti per renderlo più duro' })],
+  },
+  trxSplitSquat: {
+    id: 'trxSplitSquat',
+    name: 'Affondo bulgaro al TRX',
+    metric: 'reps',
+    perSide: true,
+    muscles: ['quadricipiti', 'glutei'],
+    secondary: ['femorali', 'core'],
+    equipment: ['suspension'],
+    description: 'Il piede dietro nella cinghia, scendi piegando la gamba davanti finché il ginocchio dietro si avvicina al pavimento.',
+    tips: ['Busto dritto', 'Ginocchio davanti sopra la caviglia', 'Scendi lentamente'],
+    illustration: 'trxSplitSquat',
+    variants: [reps('trxsplit', 'Affondo bulgaro al TRX', 8, 12)],
+  },
+  trxKneeTuck: {
+    id: 'trxKneeTuck',
+    name: 'Ginocchia al petto al TRX',
+    metric: 'reps',
+    muscles: ['core'],
+    secondary: ['spalle'],
+    equipment: ['suspension'],
+    description: 'Piedi nelle cinghie, in posizione di piegamento. Porta le ginocchia verso il petto e torna a corpo teso.',
+    tips: ['Spalle sopra le mani', 'Il bacino non cede', 'Movimento controllato'],
+    illustration: 'trxKneeTuck',
+    variants: [reps('trxtuck', 'Ginocchia al petto al TRX', 8, 15)],
+  },
 };
 
 // ---------------------------------------------------------------- riscaldamento e defaticamento alternativi
@@ -428,6 +550,52 @@ export const EXTRA_WARMUP: TimedItem[] = [
     secondary: ['spalle', 'glutei'],
   },
 ];
+
+export const JUMP_ROPE: TimedItem = {
+  id: 'warmup-rope',
+  name: 'Salto con la corda',
+  seconds: 90,
+  equipment: ['jump-rope'],
+  description: 'Salti piccoli e leggeri sugli avampiedi, girando la corda coi polsi. Parti piano.',
+  tips: ['Salti bassi, pochi centimetri', 'Gomiti vicini ai fianchi', 'Se inciampi, riparti con calma'],
+  illustration: 'jumpRope',
+  muscles: ['quadricipiti'],
+  secondary: ['spalle', 'core'],
+};
+
+/** Rullo (foam roller) al posto dell'allungamento, per chi ce l'ha. */
+export const FOAM_ROLLER: Record<'lats' | 'quads' | 'hams', TimedItem> = {
+  lats: {
+    id: 'roll-lats',
+    name: 'Rullo sui dorsali',
+    seconds: 30,
+    equipment: ['foam-roller'],
+    description: 'Su un fianco, rullo sotto l’ascella: fai scorrere lentamente il rullo lungo il fianco della schiena.',
+    tips: ['Metà tempo per lato', 'Movimento lento', 'Fermati qualche secondo sui punti tesi'],
+    illustration: 'rollLats',
+    muscles: ['schiena'],
+  },
+  quads: {
+    id: 'roll-quads',
+    name: 'Rullo sui quadricipiti',
+    seconds: 30,
+    equipment: ['foam-roller'],
+    description: 'Prono sugli avambracci, rullo sotto le cosce: scorri dal ginocchio all’anca.',
+    tips: ['Addominali stretti', 'Movimento lento', 'Evita il ginocchio'],
+    illustration: 'rollQuads',
+    muscles: ['quadricipiti'],
+  },
+  hams: {
+    id: 'roll-hams',
+    name: 'Rullo sui femorali',
+    seconds: 30,
+    equipment: ['foam-roller'],
+    description: 'Seduto, rullo sotto le cosce e mani a terra dietro: scorri dal ginocchio al gluteo.',
+    tips: ['Solleva il bacino', 'Movimento lento', 'Per più pressione, una gamba sopra l’altra'],
+    illustration: 'rollHams',
+    muscles: ['femorali'],
+  },
+};
 
 export const EXTRA_COOLDOWN: Record<'lats' | 'quads' | 'hams', TimedItem> = {
   lats: {

@@ -8,6 +8,8 @@ const base = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   base,
+  // identifica ogni build: all'avvio dopo un aggiornamento si salva una copia di sicurezza dei dati
+  define: { __BUILD_ID__: JSON.stringify(process.env.BUILD_ID ?? new Date().toISOString()) },
   plugins: [
     react(),
     VitePWA({

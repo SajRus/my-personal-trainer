@@ -9,7 +9,16 @@ import type {
   SessionLog,
   TestResult,
 } from '../domain/types';
-import type { Repository } from './repository';
+import { BACKUP_VERSION, migrateBackup, normalizeProfile } from './migrate';
+import type { Repository, SnapshotMeta } from './repository';
+
+interface SnapshotRow extends Omit<SnapshotMeta, 'id'> {
+  id?: number;
+  data: BackupData;
+}
+
+/** Quante copie di sicurezza automatiche tenere. */
+const MAX_SNAPSHOTS = 5;
 
 class TrainerDB extends Dexie {
   profile!: Table<Profile, string>;
@@ -19,7 +28,10 @@ class TrainerDB extends Dexie {
   tests!: Table<TestResult, string>;
   bodyWeight!: Table<BodyWeightEntry, string>;
   activeRest!: Table<{ date: ISODate }, string>;
+  snapshots!: Table<SnapshotRow, number>;
 
+  // REGOLA: lo schema si cambia solo aggiungendo una nuova versione (mai togliere tabelle o campi),
+  // così i dati di chi usa già l'app restano intatti. Dexie applica gli aggiornamenti da solo.
   constructor(name: string) {
     super(name);
     this.version(1).stores({
@@ -31,6 +43,13 @@ class TrainerDB extends Dexie {
       bodyWeight: 'date',
       activeRest: 'date',
     });
+    // v2: copie di sicurezza automatiche
+    this.version(2).stores({ snapshots: '++id, createdAt' });
+  }
+
+  /** Tabelle dei dati dell'utente (escluse le copie di sicurezza). */
+  get dataTables() {
+    return [this.profile, this.equipment, this.exerciseStates, this.sessions, this.tests, this.bodyWeight, this.activeRest];
   }
 }
 
@@ -44,7 +63,8 @@ export class DexieRepository implements Repository {
   }
 
   async getProfile() {
-    return (await this.db.profile.get('me')) ?? null;
+    const p = await this.db.profile.get('me');
+    return p ? normalizeProfile(p) : null;
   }
   async saveProfile(p: Profile) {
     await this.db.profile.put(p);
@@ -102,7 +122,7 @@ export class DexieRepository implements Repository {
   async exportAll(): Promise<BackupData> {
     return {
       app: 'myPersonalTrainer',
-      version: 1,
+      version: BACKUP_VERSION,
       exportedAt: new Date().toISOString(),
       profile: await this.getProfile(),
       equipment: await this.listEquipment(),
@@ -114,13 +134,12 @@ export class DexieRepository implements Repository {
     };
   }
 
-  async importAll(data: BackupData) {
-    if (data.app !== 'myPersonalTrainer' || data.version !== 1) {
-      throw new Error('File di backup non riconosciuto');
-    }
+  async importAll(raw: unknown) {
+    const data = migrateBackup(raw); // valida prima di toccare qualsiasi dato
+    if (await this.getProfile()) await this.saveSnapshot('Prima di importare un backup');
     const d = this.db;
-    await d.transaction('rw', [d.profile, d.equipment, d.exerciseStates, d.sessions, d.tests, d.bodyWeight, d.activeRest], async () => {
-      await this.clearAll();
+    await d.transaction('rw', d.dataTables, async () => {
+      await Promise.all(d.dataTables.map((t) => t.clear()));
       if (data.profile) await d.profile.put(data.profile);
       await d.equipment.bulkPut(data.equipment);
       await d.exerciseStates.bulkPut(data.exerciseStates);
@@ -132,6 +151,25 @@ export class DexieRepository implements Repository {
   }
 
   async clearAll() {
-    await Promise.all(this.db.tables.map((t) => t.clear()));
+    if (await this.getProfile()) await this.saveSnapshot('Prima di cancellare i dati');
+    await Promise.all(this.db.dataTables.map((t) => t.clear()));
+  }
+
+  // ---------------------------------------------------------------- copie di sicurezza
+
+  async saveSnapshot(reason: string, build?: string) {
+    const data = await this.exportAll();
+    await this.db.snapshots.add({ createdAt: data.exportedAt, reason, build, sessions: data.sessions.length, data });
+    const all = await this.db.snapshots.orderBy('createdAt').primaryKeys();
+    if (all.length > MAX_SNAPSHOTS) await this.db.snapshots.bulkDelete(all.slice(0, all.length - MAX_SNAPSHOTS));
+  }
+
+  async listSnapshots(): Promise<SnapshotMeta[]> {
+    const rows = await this.db.snapshots.orderBy('createdAt').reverse().toArray();
+    return rows.map(({ id, createdAt, reason, build, sessions }) => ({ id: id!, createdAt, reason, build, sessions }));
+  }
+
+  async getSnapshot(id: number) {
+    return (await this.db.snapshots.get(id))?.data ?? null;
   }
 }

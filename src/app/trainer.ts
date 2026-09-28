@@ -34,6 +34,7 @@ import type {
   TestValues,
   WorkoutDayType,
 } from '../domain/types';
+import { normalizeState } from '../storage/migrate';
 import type { Repository } from '../storage/repository';
 import { newId } from '../lib/id';
 import { todayISO } from '../domain/dates';
@@ -59,7 +60,8 @@ export async function loadAll(repo: Repository): Promise<AppData | null> {
     repo.listBodyWeight(),
     repo.listActiveRest(),
   ]);
-  const byId: Record<string, ExerciseState> = Object.fromEntries(states.map((s) => [s.exerciseId, s]));
+  // normalizeState: gli stati salvati da versioni precedenti ricevono i campi nuovi con valori di default
+  const byId: Record<string, ExerciseState> = Object.fromEntries(states.map((s) => [s.exerciseId, normalizeState(s)]));
   // Esercizi aggiunti in program.ts dopo l'inizio: stato iniziale dall'ultimo test.
   const baseTests = tests[tests.length - 1]?.values ?? BASELINE_TESTS;
   for (const ex of Object.values(EXERCISES)) {

@@ -27,7 +27,13 @@ export type EquipmentKind =
   | 'mat'
   | 'ab-wheel'
   | 'bike'
-  | 'chair';
+  | 'chair'
+  // aggiunti dopo la prima versione (solo nuovi valori: quelli esistenti non si toccano)
+  | 'kettlebell'
+  | 'pullup-bar'
+  | 'suspension'
+  | 'jump-rope'
+  | 'foam-roller';
 
 export type Anchor = 'alto' | 'medio' | 'basso';
 
@@ -107,6 +113,8 @@ export interface BlockDef {
    * sceglie ogni volta un esercizio diverso tra l'originale e queste.
    */
   alternatives?: string[][];
+  /** Usati solo se nessun esercizio della posizione è possibile con l'attrezzatura (es. niente elastici). */
+  fallbacks?: string[][];
   sets: number;
   rest: RestKind;
 }
@@ -159,7 +167,14 @@ export interface Settings {
   restBetweenTestsSec: number;
   /** Secondi di preparazione prima di ogni nuovo esercizio. */
   prepSec: number;
+  /** Musica durante l'allenamento (aggiunta dopo: opzionale per i dati vecchi). */
+  music?: MusicSetting;
+  /** 0-100 */
+  musicVolume?: number;
 }
+
+/** 'mine' = musica di un'altra app (Spotify, Apple Music…): l'app non la interrompe. */
+export type MusicSetting = 'off' | 'energia' | 'chill' | 'mine';
 
 export type Sex = 'M' | 'F' | 'X'; // X = preferisce non dirlo
 

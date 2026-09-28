@@ -18,6 +18,24 @@ export function unlockAudio() {
   }
 }
 
+export function getAudioContext(): AudioContext | null {
+  return ctx;
+}
+
+/**
+ * Come l'audio dell'app convive con quello del telefono (Safari/iOS 17+):
+ * - 'playback': la colonna sonora dell'app suona anche col tasto silenzioso e mette in pausa Spotify & co.
+ * - 'ambient': beep e voce si mescolano alla musica di un'altra app senza fermarla.
+ */
+export function setAudioSession(type: 'playback' | 'ambient' | 'auto') {
+  try {
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+    if (session) session.type = type;
+  } catch {
+    // non supportato
+  }
+}
+
 function tone(freq: number, duration: number, delay = 0, volume = 0.35) {
   if (!ctx) return;
   const t = ctx.currentTime + delay;

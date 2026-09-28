@@ -143,4 +143,19 @@ export const MEDIA: Record<string, ExerciseMedia> = {
   stretchQuadsFloor: { frames: frames('stretchQuadsFloor', 2), source: fedb('All_Fours_Quad_Stretch'), license: PD, author: FEDB },
   stretchHamsBand: { frames: frames('stretchHamsBand', 2), source: fedb('Hamstring_Stretch'), license: PD, author: FEDB, note: 'Va bene l’elastico tubolare o la fascia.' },
   runInPlace: { frames: frames('runInPlace', 2), source: fedb('Fast_Skipping'), license: PD, author: FEDB, note: 'Sul posto: ginocchia alte e braccia che accompagnano.' },
+
+  // ---- attrezzi aggiunti: sbarra, kettlebell, TRX, corda, rullo
+  pullUp: { frames: frames('pullUp', 2), source: fedb('Pullups'), license: PD, author: FEDB },
+  chinUp: { frames: frames('chinUp', 2), source: fedb('Chin-Up'), license: PD, author: FEDB },
+  hangingKneeRaise: { frames: frames('hangingKneeRaise', 2), source: fedb('Hanging_Leg_Raise'), license: PD, author: FEDB, note: 'In foto a gambe tese: con le ginocchia piegate è più facile, si parte da lì.' },
+  gobletSquat: { frames: frames('gobletSquat', 2), source: fedb('Goblet_Squat'), license: PD, author: FEDB },
+  kbSwing: { frames: frames('kbSwing', 2), source: fedb('One-Arm_Kettlebell_Swings'), license: PD, author: FEDB, note: 'In foto a un braccio: a due mani è più semplice e sicuro.' },
+  kbRow: { frames: frames('kbRow', 2), source: fedb('Alternating_Kettlebell_Row'), license: PD, author: FEDB, note: 'In foto con due kettlebell: va bene anche uno alla volta.' },
+  trxRow: { frames: frames('trxRow', 2), source: fedb('Suspended_Row'), license: PD, author: FEDB, note: 'In foto con gli anelli: con il TRX il movimento è lo stesso.' },
+  trxSplitSquat: { frames: frames('trxSplitSquat', 2), source: fedb('Suspended_Split_Squat'), license: PD, author: FEDB },
+  trxKneeTuck: { frames: frames('trxKneeTuck', 2), source: fedb('Suspended_Reverse_Crunch'), license: PD, author: FEDB, note: 'Piedi nelle cinghie: in foto la versione che solleva il bacino.' },
+  jumpRope: { frames: frames('jumpRope', 2), source: fedb('Rope_Jumping'), license: PD, author: FEDB },
+  rollLats: { frames: frames('rollLats', 2), source: fedb('Latissimus_Dorsi-SMR'), license: PD, author: FEDB },
+  rollQuads: { frames: frames('rollQuads', 2), source: fedb('Quadriceps-SMR'), license: PD, author: FEDB },
+  rollHams: { frames: frames('rollHams', 2), source: fedb('Hamstring-SMR'), license: PD, author: FEDB },
 };
